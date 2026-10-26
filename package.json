@@ -1,0 +1,300 @@
+{
+  "name": "claude-router",
+  "displayName": "Claude Router",
+  "description": "Routes each prompt to the right Claude model locally, with exact version resolution.",
+  "version": "0.1.0",
+  "publisher": "local",
+  "license": "UNLICENSED",
+  "private": true,
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "AI",
+    "Programming Languages"
+  ],
+  "main": "./out/src/extension.js",
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "claudeRouter.openChat",
+        "title": "Open Chat",
+        "category": "Claude Router"
+      },
+      {
+        "command": "claudeRouter.editSelection",
+        "title": "Edit Selection",
+        "category": "Claude Router"
+      },
+      {
+        "command": "claudeRouter.pickFamily",
+        "title": "Pin Model Family",
+        "category": "Claude Router"
+      },
+      {
+        "command": "claudeRouter.setApiKey",
+        "title": "Set Anthropic API Key",
+        "category": "Claude Router"
+      },
+      {
+        "command": "claudeRouter.clearApiKey",
+        "title": "Clear Anthropic API Key",
+        "category": "Claude Router"
+      },
+      {
+        "command": "claudeRouter.rescanWorkspace",
+        "title": "Rescan Workspace Constraints",
+        "category": "Claude Router"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "claudeRouter.editSelection",
+          "when": "editorHasSelection",
+          "group": "claudeRouter"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Claude Router",
+      "properties": {
+        "claudeRouter.provider": {
+          "type": "string",
+          "enum": [
+            "anthropic",
+            "bedrock",
+            "vertex"
+          ],
+          "enumDescriptions": [
+            "Claude API with an API key stored in VS Code SecretStorage",
+            "Amazon Bedrock (Mantle) using the default AWS credential chain",
+            "Google Cloud Vertex AI using Application Default Credentials"
+          ],
+          "default": "anthropic",
+          "description": "Where requests are sent."
+        },
+        "claudeRouter.pinnedFamily": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "haiku",
+            "sonnet",
+            "opus",
+            "fable"
+          ],
+          "enumDescriptions": [
+            "Let the local classifier pick the family for each request",
+            "Always use Haiku",
+            "Always use Sonnet",
+            "Always use Opus",
+            "Always use Fable"
+          ],
+          "default": "auto",
+          "description": "Pin every request to one model family. A pin always wins over the classifier; a /prefix in the prompt still overrides it."
+        },
+        "claudeRouter.releaseChannel": {
+          "type": "string",
+          "enum": [
+            "stable",
+            "experimental"
+          ],
+          "enumDescriptions": [
+            "Latest Stable builds only",
+            "Prefer builds marked experimental in the registry when one exists"
+          ],
+          "default": "stable",
+          "description": "Which builds the Latest pointer resolves to."
+        },
+        "claudeRouter.haiku.channel": {
+          "type": "string",
+          "enum": [
+            "latest",
+            "snapshot",
+            "custom"
+          ],
+          "enumDescriptions": [
+            "Latest Pointer: always the newest stable Haiku",
+            "Pinned Snapshot: the version chosen in the Snapshot setting",
+            "Custom Model ID: the raw string in the Custom Model ID setting, sent as-is"
+          ],
+          "default": "latest",
+          "description": "How the Haiku tier resolves to a model version."
+        },
+        "claudeRouter.haiku.snapshot": {
+          "type": "string",
+          "enum": [
+            "claude-haiku-5-5",
+            "claude-haiku-4-5"
+          ],
+          "enumDescriptions": [
+            "Claude Haiku 5.5",
+            "Claude Haiku 4.5"
+          ],
+          "default": "claude-haiku-5-5",
+          "description": "Haiku version used when the channel is Pinned Snapshot."
+        },
+        "claudeRouter.haiku.customModelId": {
+          "type": "string",
+          "default": "",
+          "description": "Haiku model string used when the channel is Custom Model ID. Sent to the provider without validation; retired IDs are mapped to the current Haiku."
+        },
+        "claudeRouter.sonnet.channel": {
+          "type": "string",
+          "enum": [
+            "latest",
+            "snapshot",
+            "custom"
+          ],
+          "enumDescriptions": [
+            "Latest Pointer: always the newest stable Sonnet",
+            "Pinned Snapshot: the version chosen in the Snapshot setting",
+            "Custom Model ID: the raw string in the Custom Model ID setting, sent as-is"
+          ],
+          "default": "latest",
+          "description": "How the Sonnet tier resolves to a model version."
+        },
+        "claudeRouter.sonnet.snapshot": {
+          "type": "string",
+          "enum": [
+            "claude-sonnet-5-5",
+            "claude-sonnet-5",
+            "claude-sonnet-4-6",
+            "claude-sonnet-4-5"
+          ],
+          "enumDescriptions": [
+            "Claude Sonnet 5.5",
+            "Claude Sonnet 5",
+            "Claude Sonnet 4.6",
+            "Claude Sonnet 4.5 (deprecated)"
+          ],
+          "default": "claude-sonnet-5-5",
+          "description": "Sonnet version used when the channel is Pinned Snapshot."
+        },
+        "claudeRouter.sonnet.customModelId": {
+          "type": "string",
+          "default": "",
+          "description": "Sonnet model string used when the channel is Custom Model ID. Sent to the provider without validation; retired IDs are mapped to the current Sonnet."
+        },
+        "claudeRouter.opus.channel": {
+          "type": "string",
+          "enum": [
+            "latest",
+            "snapshot",
+            "custom"
+          ],
+          "enumDescriptions": [
+            "Latest Pointer: always the newest stable Opus",
+            "Pinned Snapshot: the version chosen in the Snapshot setting",
+            "Custom Model ID: the raw string in the Custom Model ID setting, sent as-is"
+          ],
+          "default": "latest",
+          "description": "How the Opus tier resolves to a model version."
+        },
+        "claudeRouter.opus.snapshot": {
+          "type": "string",
+          "enum": [
+            "claude-opus-5-5",
+            "claude-opus-5",
+            "claude-opus-4-8",
+            "claude-opus-4-7",
+            "claude-opus-4-6",
+            "claude-opus-4-5"
+          ],
+          "enumDescriptions": [
+            "Claude Opus 5.5",
+            "Claude Opus 5",
+            "Claude Opus 4.8",
+            "Claude Opus 4.7",
+            "Claude Opus 4.6",
+            "Claude Opus 4.5"
+          ],
+          "default": "claude-opus-5-5",
+          "description": "Opus version used when the channel is Pinned Snapshot."
+        },
+        "claudeRouter.opus.customModelId": {
+          "type": "string",
+          "default": "",
+          "description": "Opus model string used when the channel is Custom Model ID. Sent to the provider without validation; retired IDs are mapped to the current Opus."
+        },
+        "claudeRouter.fable.channel": {
+          "type": "string",
+          "enum": [
+            "latest",
+            "snapshot",
+            "custom"
+          ],
+          "enumDescriptions": [
+            "Latest Pointer: always the newest stable Fable",
+            "Pinned Snapshot: the version chosen in the Snapshot setting",
+            "Custom Model ID: the raw string in the Custom Model ID setting, sent as-is"
+          ],
+          "default": "latest",
+          "description": "How the Fable tier resolves to a model version."
+        },
+        "claudeRouter.fable.snapshot": {
+          "type": "string",
+          "enum": [
+            "claude-fable-5-1",
+            "claude-fable-5"
+          ],
+          "enumDescriptions": [
+            "Claude Fable 5.1",
+            "Claude Fable 5"
+          ],
+          "default": "claude-fable-5-1",
+          "description": "Fable version used when the channel is Pinned Snapshot."
+        },
+        "claudeRouter.fable.customModelId": {
+          "type": "string",
+          "default": "",
+          "description": "Fable model string used when the channel is Custom Model ID. Sent to the provider without validation; retired IDs are mapped to the current Fable."
+        },
+        "claudeRouter.bedrock.region": {
+          "type": "string",
+          "default": "",
+          "description": "AWS region for Bedrock. Empty uses AWS_REGION / AWS_DEFAULT_REGION."
+        },
+        "claudeRouter.vertex.projectId": {
+          "type": "string",
+          "default": "",
+          "description": "Google Cloud project ID for Vertex AI. Empty uses ANTHROPIC_VERTEX_PROJECT_ID."
+        },
+        "claudeRouter.vertex.region": {
+          "type": "string",
+          "default": "global",
+          "description": "Vertex AI region (\"global\" recommended)."
+        },
+        "claudeRouter.registryPath": {
+          "type": "string",
+          "default": "",
+          "description": "Optional path to a models-registry.json that replaces the bundled one, so new model versions can be added without an extension release."
+        },
+        "claudeRouter.maxTokens": {
+          "type": "number",
+          "default": 64000,
+          "minimum": 1024,
+          "description": "max_tokens for each request."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p .",
+    "watch": "tsc -w -p .",
+    "test": "tsc -p . && node --test out/test/*.test.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/bedrock-sdk": "^1.1.0",
+    "@anthropic-ai/sdk": "^1.3.0",
+    "@anthropic-ai/vertex-sdk": "^1.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "@types/vscode": "^1.90.0",
+    "typescript": "^7.0.2"
+  }
+}
