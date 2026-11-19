@@ -253,6 +253,11 @@
           "default": "",
           "description": "Fable model string used when the channel is Custom Model ID. Sent to the provider without validation; retired IDs are mapped to the current Fable."
         },
+        "claudeRouter.anthropic.baseUrl": {
+          "type": "string",
+          "default": "",
+          "description": "Optional base URL for the Claude API provider, e.g. http://localhost:4000 for a local LiteLLM proxy. Empty uses ANTHROPIC_BASE_URL or https://api.anthropic.com."
+        },
         "claudeRouter.bedrock.region": {
           "type": "string",
           "default": "",

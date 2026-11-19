@@ -30,6 +30,7 @@ export async function readProviderOptions(secrets: vscode.SecretStorage): Promis
   const cfg = vscode.workspace.getConfiguration(SECTION);
   return {
     anthropicApiKey: await secrets.get(API_KEY_SECRET),
+    anthropicBaseUrl: cfg.get<string>("anthropic.baseUrl")?.trim() || undefined,
     bedrockRegion: cfg.get<string>("bedrock.region"),
     vertexProjectId: cfg.get<string>("vertex.projectId"),
     vertexRegion: cfg.get<string>("vertex.region"),

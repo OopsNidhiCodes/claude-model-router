@@ -1,0 +1,35 @@
+# Local proxy that lets Claude Router talk to Groq's free tier.
+# Start:  GROQ_API_KEY=gsk_... scripts/start-proxy.sh
+# The model_name values match the registry ids, so the router's normal
+# "latest" resolution works unchanged and the status bar shows the Claude
+# tier that was chosen even though a Groq model answers.
+model_list:
+  - model_name: claude-haiku-5-5
+    litellm_params:
+      model: groq/openai/gpt-oss-20b
+      api_key: os.environ/GROQ_API_KEY
+  - model_name: claude-sonnet-5-5
+    litellm_params:
+      model: groq/openai/gpt-oss-120b
+      api_key: os.environ/GROQ_API_KEY
+  - model_name: claude-opus-5-5
+    litellm_params:
+      model: groq/openai/gpt-oss-120b
+      api_key: os.environ/GROQ_API_KEY
+  - model_name: claude-fable-5-1
+    litellm_params:
+      model: groq/openai/gpt-oss-120b
+      api_key: os.environ/GROQ_API_KEY
+  # Passthrough: lets you call any Groq model by its own name, e.g. "groq/llama-3.1-8b-instant",
+  # which is handy for the Custom Model ID channel and for checking which names Groq still serves.
+  - model_name: groq/*
+    litellm_params:
+      model: groq/*
+      api_key: os.environ/GROQ_API_KEY
+
+litellm_settings:
+  drop_params: true
+
+general_settings:
+  # Must match ANTHROPIC_API_KEY in .vscode/launch.json. Local-only; not a real secret.
+  master_key: sk-local-proxy

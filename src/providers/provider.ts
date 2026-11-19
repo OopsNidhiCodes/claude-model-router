@@ -18,6 +18,8 @@ export interface ChatRequest {
 
 export interface ProviderOptions {
   anthropicApiKey?: string;
+  /** Overrides the Claude API host, e.g. a local proxy. */
+  anthropicBaseUrl?: string;
   bedrockRegion?: string;
   vertexProjectId?: string;
   vertexRegion?: string;
@@ -60,7 +62,14 @@ export function createProvider(name: ProviderName, opts: ProviderOptions): Netwo
   switch (name) {
     case "anthropic":
       // Without a stored key the SDK falls back to ANTHROPIC_API_KEY / `ant auth login` credentials.
-      return new SdkProvider(name, new Anthropic(opts.anthropicApiKey ? { apiKey: opts.anthropicApiKey } : {}), true);
+      return new SdkProvider(
+        name,
+        new Anthropic({
+          ...(opts.anthropicApiKey ? { apiKey: opts.anthropicApiKey } : {}),
+          ...(opts.anthropicBaseUrl ? { baseURL: opts.anthropicBaseUrl } : {}),
+        }),
+        true,
+      );
     case "bedrock":
       return new SdkProvider(name, new AnthropicBedrockMantle({ awsRegion: opts.bedrockRegion || undefined }), false);
     case "vertex":
