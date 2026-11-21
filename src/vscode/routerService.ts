@@ -1,9 +1,10 @@
 import * as vscode from "vscode";
 import { ModelRegistry } from "../core/registry";
 import { route, RoutingError } from "../core/router";
-import { RouteDecision } from "../core/types";
+import { Family, RouteDecision } from "../core/types";
 import { createProvider, fallbackServedBy, Message, MessageParam } from "../providers/provider";
 import { loadRegistry, maxTokens, readProviderOptions, readSettings } from "./config";
+import { DecisionLog } from "./decisionLog";
 import { RouterStatusBar } from "./statusBar";
 import { WorkspaceScanner } from "./workspaceScanner";
 
@@ -11,6 +12,8 @@ export interface RoutedPrompt {
   prompt: string;
   contextBytes: number;
   inlineEdit?: boolean;
+  /** Escalation floor; see RouteRequest.minFamily. */
+  minFamily?: Family;
 }
 
 export interface SendOptions {
@@ -25,8 +28,10 @@ export class RouterService implements vscode.Disposable {
   private registry: ModelRegistry;
   readonly scanner: WorkspaceScanner;
   readonly statusBar = new RouterStatusBar();
+  readonly log: DecisionLog;
 
   constructor(private readonly context: vscode.ExtensionContext) {
+    this.log = new DecisionLog(context);
     this.registry = loadRegistry(context.extensionPath);
     this.scanner = new WorkspaceScanner(() => this.registry.data.strictModern);
     void this.scanner.scan();

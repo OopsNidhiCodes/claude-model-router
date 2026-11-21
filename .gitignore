@@ -3,3 +3,4 @@ out/
 *.vsix
 .litellm-venv/
 .DS_Store
+data/

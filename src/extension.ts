@@ -37,6 +37,9 @@ export function activate(context: vscode.ExtensionContext) {
     void vscode.window.showInformationMessage("Claude Router: API key removed.");
   });
 
+  command("claudeRouter.openDecisionLog", () => service.log.open());
+  command("claudeRouter.clearDecisionLog", () => service.log.clear());
+
   command("claudeRouter.rescanWorkspace", async () => {
     const profile = await service.scanner.scan();
     void vscode.window.showInformationMessage(

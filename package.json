@@ -48,6 +48,16 @@
         "command": "claudeRouter.rescanWorkspace",
         "title": "Rescan Workspace Constraints",
         "category": "Claude Router"
+      },
+      {
+        "command": "claudeRouter.openDecisionLog",
+        "title": "Open Decision Log",
+        "category": "Claude Router"
+      },
+      {
+        "command": "claudeRouter.clearDecisionLog",
+        "title": "Clear Decision Log",
+        "category": "Claude Router"
       }
     ],
     "menus": {
@@ -283,6 +293,23 @@
           "default": 64000,
           "minimum": 1024,
           "description": "max_tokens for each request."
+        },
+        "claudeRouter.decisionLog.enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Append every routing decision (chosen tier, classifier scores, escalations, stop reason) to a local JSON Lines file in the extension's storage folder. Never sent anywhere. Use \"Claude Router: Open Decision Log\" to view it."
+        },
+        "claudeRouter.decisionLog.includePrompt": {
+          "type": "boolean",
+          "default": true,
+          "description": "Include the prompt text in each decision log entry. Turn off to keep only sizes and scores. Attached file content is never logged, only its size."
+        },
+        "claudeRouter.escalation.maxAuto": {
+          "type": "number",
+          "default": 1,
+          "minimum": 0,
+          "maximum": 3,
+          "description": "How many times one request may be escalated automatically when the model replies ESCALATE. 0 disables model-initiated escalation; the Escalate button always works."
         }
       }
     }

@@ -79,7 +79,7 @@ export interface Classification {
   reasons: string[];
 }
 
-export type DecisionSource = "prefix" | "pin" | "classifier";
+export type DecisionSource = "prefix" | "pin" | "classifier" | "escalation";
 
 export interface RouteDecision {
   family: Family;

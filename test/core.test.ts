@@ -3,6 +3,8 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, it } from "node:test";
 import { classify } from "../src/core/classifier";
+import { buildEntry } from "../src/core/decisionLog";
+import { ESCALATE_TOKEN, isEscalationRequest, nextFamily, systemPromptFor } from "../src/core/escalation";
 import { parsePrefix } from "../src/core/prefix";
 import { ModelRegistry, RegistryError, validateRegistry } from "../src/core/registry";
 import { LEGACY_MAPPED_WARNING, route, RoutingError } from "../src/core/router";
@@ -199,5 +201,73 @@ describe("router precedence", () => {
   it("warns on deprecated models", () => {
     const d = route(registry, { ...base, prompt: "/sonnet-4.5 x", settings: settings() });
     assert.match(d.warnings[0], /deprecated and retires on 2026-11-30/);
+  });
+});
+
+describe("escalation", () => {
+  const base = { contextBytes: 2 * KB, strictModern: false };
+
+  it("steps one tier up and stops at the top", () => {
+    assert.equal(nextFamily("haiku"), "sonnet");
+    assert.equal(nextFamily("sonnet"), "opus");
+    assert.equal(nextFamily("opus"), "fable");
+    assert.equal(nextFamily("fable"), undefined);
+  });
+
+  it("offers the handoff to every tier except the top", () => {
+    for (const f of ["haiku", "sonnet", "opus"] as const) assert.ok(systemPromptFor("base", f).includes(ESCALATE_TOKEN), f);
+    assert.equal(systemPromptFor("base", "fable"), "base");
+  });
+
+  it("recognises the ESCALATE reply and nothing else", () => {
+    for (const text of ["ESCALATE", "  escalate\n", "**ESCALATE**", "ESCALATE."]) assert.ok(isEscalationRequest(text), text);
+    for (const text of ["I would ESCALATE this", "ESCALATE the ticket to ops", "", "done"]) assert.ok(!isEscalationRequest(text), text);
+  });
+
+  it("floor raises the classifier result with a notice", () => {
+    const d = route(registry, { ...base, prompt: "fix typo", settings: settings(), minFamily: "opus" });
+    assert.equal(d.family, "opus");
+    assert.equal(d.source, "escalation");
+    assert.equal(d.providerModelId, "claude-opus-5-5");
+    assert.deepEqual(d.notices, ["$(arrow-up) Escalated from Haiku to Opus"]);
+  });
+
+  it("floor raises a pin too, but never lowers a higher result", () => {
+    const pinned = route(registry, { ...base, prompt: "fix typo", settings: settings({ pinnedFamily: "haiku" }), minFamily: "sonnet" });
+    assert.equal(pinned.family, "sonnet");
+    const higher = route(registry, { ...base, prompt: "fix typo", settings: settings({ pinnedFamily: "fable" }), minFamily: "sonnet" });
+    assert.equal(higher.family, "fable");
+    assert.equal(higher.source, "pin");
+  });
+
+  it("prefix still bypasses the floor", () => {
+    const d = route(registry, { ...base, prompt: "/haiku hi", settings: settings(), minFamily: "opus" });
+    assert.equal(d.family, "haiku");
+    assert.equal(d.source, "prefix");
+  });
+});
+
+describe("decision log", () => {
+  const base = { contextBytes: 2 * KB, strictModern: false };
+  const first = route(registry, { ...base, prompt: "fix typo", settings: settings() });
+  const final = route(registry, { ...base, prompt: "fix typo", settings: settings(), minFamily: "sonnet" });
+  const outcome = { surface: "chat" as const, prompt: "fix typo", contextBytes: 2 * KB, first, final, escalations: [{ from: "haiku" as const, to: "sonnet" as const, by: "model" as const }], stopReason: "end_turn" };
+
+  it("records the first decision, what served, and the escalation", () => {
+    const e = buildEntry(outcome, true, new Date("2026-01-02T03:04:05Z"));
+    assert.equal(e.ts, "2026-01-02T03:04:05.000Z");
+    assert.equal(e.prompt, "fix typo");
+    assert.deepEqual(e.decided, { family: "haiku", source: "classifier", model: "claude-haiku-5-5" });
+    assert.deepEqual(e.served, { family: "sonnet", model: "claude-sonnet-5-5" });
+    assert.deepEqual(e.escalations, outcome.escalations);
+    assert.equal(e.scores?.haiku, first.classification?.scores.haiku);
+    assert.equal(e.stopReason, "end_turn");
+  });
+
+  it("omits the prompt text when asked, keeping its size", () => {
+    const e = buildEntry(outcome, false);
+    assert.equal("prompt" in e, false);
+    assert.equal(e.promptChars, 8);
+    assert.equal(e.contextBytes, 2 * KB);
   });
 });

@@ -47,6 +47,7 @@ Open the Command Palette and type "Claude Router":
 - **Pin Model Family** pins every request to one family. Also by clicking the status bar item.
 - **Set / Clear Anthropic API Key** stores the key in VS Code SecretStorage.
 - **Rescan Workspace Constraints** re-reads the workspace declaration files.
+- **Open / Clear Decision Log** views or empties the local routing log.
 
 ## Development
 
@@ -105,6 +106,37 @@ curl -s https://api.groq.com/openai/v1/models \
 The `groq/*` passthrough entry in `litellm.yaml` also lets you call any Groq
 model by name from the extension's Custom Model ID channel.
 
+## Escalation
+
+A task can look easy and turn out hard. Two escape hatches re-run a turn one
+tier up (Haiku, Sonnet, Opus, Fable):
+
+- **The model asks.** Every tier except the top is told it may reply with the
+  single word `ESCALATE` when it genuinely cannot do the task. The extension
+  discards that reply and retries on the next tier, up to
+  `claudeRouter.escalation.maxAuto` times per request (default 1; 0 disables).
+- **You ask.** The **Escalate** button in the chat redoes the last answer on
+  the next tier.
+
+Once a chat has escalated, that tier becomes the floor for the rest of the
+conversation. "New chat" resets it. A `/prefix` still overrides the floor.
+
+## Decision log
+
+Off by default. Set `claudeRouter.decisionLog.enabled` to record every routed
+turn as one JSON line in `decisions.jsonl` inside the extension's storage
+folder. **Claude Router: Open Decision Log** opens it; **Clear Decision Log**
+empties it. Nothing is ever sent anywhere.
+
+Each line holds the prompt (unless `decisionLog.includePrompt` is off), prompt
+and context sizes, classifier scores and reasons, the first decision and its
+source, what finally answered, any escalations and who triggered them, and the
+stop reason. Attached file content is never logged, only its size.
+
+The log is how you check the classifier against real use and, over time, the
+labelled data a trained classifier would need: every escalation says the first
+tier was too low, every non-escalated reply says it was probably fine.
+
 ## Settings
 
 All settings live under `claudeRouter.*`. The most useful ones:
@@ -119,3 +151,5 @@ All settings live under `claudeRouter.*`. The most useful ones:
 | `anthropic.baseUrl` | Alternate Claude API host, such as a local proxy. |
 | `registryPath` | Path to a replacement `models-registry.json`. |
 | `maxTokens` | `max_tokens` for every request. |
+| `escalation.maxAuto` | Model-initiated escalations allowed per request. |
+| `decisionLog.enabled` / `decisionLog.includePrompt` | Local routing log and whether it keeps prompt text. |

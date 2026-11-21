@@ -1,4 +1,5 @@
 import { classify } from "./classifier";
+import { isAbove } from "./escalation";
 import { parsePrefix } from "./prefix";
 import { familyFromModelId, ModelRegistry } from "./registry";
 import { Classification, ClassifierInput, Family, ModelEntry, RouteDecision, RouterSettings } from "./types";
@@ -16,6 +17,11 @@ export interface RouteRequest {
   settings: RouterSettings;
   /** Result of the workspace scan; true upgrades legacy-generation pins. */
   strictModern: boolean;
+  /**
+   * Lowest family allowed, set after an escalation. Raises the pin or
+   * classifier result; a /prefix still bypasses it.
+   */
+  minFamily?: Family;
 }
 
 interface Resolved {
@@ -30,6 +36,7 @@ interface Resolved {
  *   2. settings pin    (pinned family and per-family version choice)
  *   3. workspace rules (strict-modern upgrades legacy generations, family preserved)
  *   4. local classifier
+ * An escalation floor (minFamily) raises the result of steps 2-4.
  */
 export function route(registry: ModelRegistry, req: RouteRequest): RouteDecision {
   const { settings } = req;
@@ -59,6 +66,12 @@ export function route(registry: ModelRegistry, req: RouteRequest): RouteDecision
   } else {
     family = classification.family;
     source = "classifier";
+  }
+
+  if (req.minFamily && isAbove(req.minFamily, family)) {
+    notices.push(`$(arrow-up) Escalated from ${registry.family(family).displayName} to ${registry.family(req.minFamily).displayName}`);
+    family = req.minFamily;
+    source = "escalation";
   }
 
   const resolved = resolveFamily(registry, family, settings, req.strictModern, warnings, notices);

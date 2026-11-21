@@ -57,3 +57,8 @@ export function loadRegistry(extensionPath: string): ModelRegistry {
   }
   return new ModelRegistry(validateRegistry(JSON.parse(readFileSync(bundled, "utf8"))));
 }
+
+/** Automatic (model-initiated) escalations allowed per request. */
+export function maxAutoEscalations(): number {
+  return vscode.workspace.getConfiguration(SECTION).get<number>("escalation.maxAuto", 1);
+}

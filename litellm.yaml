@@ -1,27 +1,73 @@
 # Local proxy that lets Claude Router talk to Groq's free tier.
 # Start:  GROQ_API_KEY=gsk_... scripts/start-proxy.sh
-# The model_name values match the registry ids, so the router's normal
-# "latest" resolution works unchanged and the status bar shows the Claude
-# tier that was chosen even though a Groq model answers.
+#
+# Every model id in resources/models-registry.json is listed, so the router's
+# "latest" resolution, pinned snapshots and /family-version prefixes all work.
+# Haiku versions map to the small GPT-OSS model, every other family to the large
+# one. The status bar shows the Claude tier the router chose; a Groq model answers.
 model_list:
-  - model_name: claude-haiku-5-5
-    litellm_params:
-      model: groq/openai/gpt-oss-20b
-      api_key: os.environ/GROQ_API_KEY
-  - model_name: claude-sonnet-5-5
-    litellm_params:
-      model: groq/openai/gpt-oss-120b
-      api_key: os.environ/GROQ_API_KEY
-  - model_name: claude-opus-5-5
-    litellm_params:
-      model: groq/openai/gpt-oss-120b
-      api_key: os.environ/GROQ_API_KEY
+  # fable
   - model_name: claude-fable-5-1
     litellm_params:
       model: groq/openai/gpt-oss-120b
       api_key: os.environ/GROQ_API_KEY
-  # Passthrough: lets you call any Groq model by its own name, e.g. "groq/llama-3.1-8b-instant",
-  # which is handy for the Custom Model ID channel and for checking which names Groq still serves.
+  - model_name: claude-fable-5
+    litellm_params:
+      model: groq/openai/gpt-oss-120b
+      api_key: os.environ/GROQ_API_KEY
+  # opus
+  - model_name: claude-opus-5-5
+    litellm_params:
+      model: groq/openai/gpt-oss-120b
+      api_key: os.environ/GROQ_API_KEY
+  - model_name: claude-opus-5
+    litellm_params:
+      model: groq/openai/gpt-oss-120b
+      api_key: os.environ/GROQ_API_KEY
+  - model_name: claude-opus-4-8
+    litellm_params:
+      model: groq/openai/gpt-oss-120b
+      api_key: os.environ/GROQ_API_KEY
+  - model_name: claude-opus-4-7
+    litellm_params:
+      model: groq/openai/gpt-oss-120b
+      api_key: os.environ/GROQ_API_KEY
+  - model_name: claude-opus-4-6
+    litellm_params:
+      model: groq/openai/gpt-oss-120b
+      api_key: os.environ/GROQ_API_KEY
+  - model_name: claude-opus-4-5
+    litellm_params:
+      model: groq/openai/gpt-oss-120b
+      api_key: os.environ/GROQ_API_KEY
+  # sonnet
+  - model_name: claude-sonnet-5-5
+    litellm_params:
+      model: groq/openai/gpt-oss-120b
+      api_key: os.environ/GROQ_API_KEY
+  - model_name: claude-sonnet-5
+    litellm_params:
+      model: groq/openai/gpt-oss-120b
+      api_key: os.environ/GROQ_API_KEY
+  - model_name: claude-sonnet-4-6
+    litellm_params:
+      model: groq/openai/gpt-oss-120b
+      api_key: os.environ/GROQ_API_KEY
+  - model_name: claude-sonnet-4-5
+    litellm_params:
+      model: groq/openai/gpt-oss-120b
+      api_key: os.environ/GROQ_API_KEY
+  # haiku
+  - model_name: claude-haiku-5-5
+    litellm_params:
+      model: groq/openai/gpt-oss-20b
+      api_key: os.environ/GROQ_API_KEY
+  - model_name: claude-haiku-4-5
+    litellm_params:
+      model: groq/openai/gpt-oss-20b
+      api_key: os.environ/GROQ_API_KEY
+  # Passthrough: call any Groq model by its own name, e.g. groq/openai/gpt-oss-20b,
+  # from the Custom Model ID channel, or to check which names Groq still serves.
   - model_name: groq/*
     litellm_params:
       model: groq/*
@@ -31,5 +77,5 @@ litellm_settings:
   drop_params: true
 
 general_settings:
-  # Must match ANTHROPIC_API_KEY in .vscode/launch.json. Local-only; not a real secret.
+  # Must match the key stored via "Claude Router: Set Anthropic API Key". Local-only; not a real secret.
   master_key: sk-local-proxy

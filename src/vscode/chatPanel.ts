@@ -1,6 +1,10 @@
 import { randomBytes } from "node:crypto";
 import * as vscode from "vscode";
-import { assistantTurn, describeError, MessageParam } from "../providers/provider";
+import { Escalation } from "../core/decisionLog";
+import { isEscalationRequest, nextFamily, systemPromptFor } from "../core/escalation";
+import { Family, RouteDecision } from "../core/types";
+import { assistantTurn, describeError, MessageParam, messageText } from "../providers/provider";
+import { maxAutoEscalations } from "./config";
 import { gatherEditorContext } from "./contextAggregator";
 import { RouterService } from "./routerService";
 
@@ -8,7 +12,18 @@ const SYSTEM_PROMPT =
   "You are a coding assistant inside VS Code. The user's message may start with a <file> block holding the active file or selection; " +
   "use it as context. Answer concisely and use Markdown code blocks for code.";
 
-type FromWebview = { type: "send"; text: string; includeContext: boolean } | { type: "stop" } | { type: "clear" };
+type FromWebview = { type: "send"; text: string; includeContext: boolean } | { type: "stop" } | { type: "clear" } | { type: "escalate" };
+
+/** What is needed to re-run a turn on a higher tier. */
+interface Turn {
+  prompt: string;
+  contextBytes: number;
+  user: MessageParam;
+  decision: RouteDecision;
+  /** First decision of this turn, kept for the decision log. */
+  first: RouteDecision;
+  escalations: Escalation[];
+}
 
 /** Sidebar-style chat channel in its own webview panel. One conversation per panel. */
 export class ChatPanel implements vscode.Disposable {
@@ -25,6 +40,10 @@ export class ChatPanel implements vscode.Disposable {
   private readonly panel: vscode.WebviewPanel;
   private history: MessageParam[] = [];
   private pending: AbortController | undefined;
+  /** Escalation floor for this conversation; once raised it stays raised ("sticky upward"). */
+  private minFamily: Family | undefined;
+  /** The last completed exchange, so the Escalate button can redo it. */
+  private last: Turn | undefined;
   private readonly disposables: vscode.Disposable[] = [];
 
   private constructor(private readonly service: RouterService) {
@@ -45,42 +64,97 @@ export class ChatPanel implements vscode.Disposable {
     if (msg.type === "stop") return this.pending?.abort();
     if (msg.type === "clear") {
       this.history = [];
+      this.minFamily = undefined;
+      this.last = undefined;
       return;
     }
-    if (this.pending || !msg.text.trim()) return;
+    if (this.pending) return;
+
+    if (msg.type === "escalate") return this.escalateLast();
+    if (!msg.text.trim()) return;
 
     const context = msg.includeContext ? gatherEditorContext() : { text: "", bytes: 0, description: "" };
-    const decision = this.service.decide({ prompt: msg.text, contextBytes: context.bytes });
+    const decision = this.service.decide({ prompt: msg.text, contextBytes: context.bytes, minFamily: this.minFamily });
     if (!decision) {
       this.post({ type: "rejected" });
       return;
     }
-
     const content = context.text ? `${context.text}\n\n${decision.prompt}` : decision.prompt;
-    const user: MessageParam = { role: "user", content };
-    this.post({ type: "start", label: decision.label, modelId: decision.providerModelId, contextDescription: context.description });
+    await this.run(
+      { prompt: msg.text, contextBytes: context.bytes, user: { role: "user", content }, decision, first: decision, escalations: [] },
+      context.description,
+    );
+  }
 
+  /** User pressed Escalate: forget the last exchange and redo it one tier up. */
+  private async escalateLast() {
+    const last = this.last;
+    const to = last && nextFamily(last.decision.family);
+    if (!last || !to) return;
+    this.history.splice(-2, 2);
+    this.minFamily = to;
+    const decision = this.service.decide({ prompt: last.prompt, contextBytes: last.contextBytes, minFamily: to });
+    if (!decision) {
+      this.post({ type: "rejected" });
+      return;
+    }
+    await this.run({ ...last, decision, first: decision, escalations: [{ from: last.decision.family, to, by: "user" }] }, "");
+  }
+
+  /** Streams one turn. If the model asks to escalate, retries on the next tier until the top. */
+  private async run(turn: Turn, contextDescription: string): Promise<void> {
+    this.post({ type: "start", label: turn.decision.label, modelId: turn.decision.providerModelId, contextDescription, canEscalate: false });
     this.pending = new AbortController();
     try {
-      const message = await this.service.send(decision, {
-        system: SYSTEM_PROMPT,
-        messages: [...this.history, user],
+      const message = await this.service.send(turn.decision, {
+        system: systemPromptFor(SYSTEM_PROMPT, turn.decision.family),
+        messages: [...this.history, turn.user],
         signal: this.pending.signal,
         onText: (delta) => this.post({ type: "delta", text: delta }),
       });
       if (message.stop_reason === "refusal") {
         // A refused turn is not kept, so the next request starts from a clean history.
         this.post({ type: "end", note: "The model declined this request." });
+        void this.log(turn, { stopReason: "refusal" });
         return;
       }
-      this.history.push(user, assistantTurn(message));
+
+      const to = nextFamily(turn.decision.family);
+      const autoUsed = turn.escalations.filter((e) => e.by === "model").length;
+      if (isEscalationRequest(messageText(message)) && to && autoUsed < maxAutoEscalations()) {
+        this.minFamily = to;
+        const decision = this.service.decide({ prompt: turn.prompt, contextBytes: turn.contextBytes, minFamily: to });
+        if (decision) {
+          this.post({ type: "escalating", note: `${turn.decision.label} asked to escalate. Retrying with ${decision.label}.` });
+          this.pending = undefined;
+          return this.run({ ...turn, decision, escalations: [...turn.escalations, { from: turn.decision.family, to, by: "model" }] }, contextDescription);
+        }
+      }
+
+      this.history.push(turn.user, assistantTurn(message));
+      this.last = turn;
+      const servedBy = message.model !== turn.decision.providerModelId ? message.model : undefined;
       const note = message.stop_reason === "max_tokens" ? "Response truncated at max_tokens." : undefined;
-      this.post({ type: "end", note, servedBy: message.model !== decision.providerModelId ? message.model : undefined });
+      this.post({ type: "end", note, servedBy, canEscalate: to !== undefined });
+      void this.log(turn, { stopReason: message.stop_reason ?? undefined, servedBy });
     } catch (err) {
       this.post({ type: "error", text: describeError(err) });
+      void this.log(turn, { error: describeError(err) });
     } finally {
       this.pending = undefined;
     }
+  }
+
+  private log(turn: Turn, outcome: { stopReason?: string; servedBy?: string; error?: string }) {
+    return this.service.log.record({
+      surface: "chat",
+      prompt: turn.prompt,
+      contextBytes: turn.contextBytes,
+      first: turn.first,
+      final: turn.decision,
+      escalations: turn.escalations,
+      ...outcome,
+    });
   }
 
   dispose() {
@@ -126,6 +200,7 @@ function html(nonce: string, cspSource: string): string {
     <label><input type="checkbox" id="ctx" checked> Include active file / selection</label>
     <button type="button" class="secondary" id="clear">New chat</button>
     <button type="button" class="secondary" id="stop" disabled>Stop</button>
+    <button type="button" class="secondary" id="escalate" disabled title="Redo the last answer with the next model tier up">Escalate</button>
     <button type="submit" id="send">Send</button>
   </div>
   <div class="hint">Enter to send, Shift+Enter for a new line.</div>
@@ -136,6 +211,7 @@ function html(nonce: string, cspSource: string): string {
   const input = document.getElementById("input");
   const send = document.getElementById("send");
   const stop = document.getElementById("stop");
+  const escalate = document.getElementById("escalate");
   let current = null;
   let lastUserTurn = null;
 
@@ -152,7 +228,7 @@ function html(nonce: string, cspSource: string): string {
     log.scrollTop = log.scrollHeight;
     return { el, body };
   }
-  function busy(on) { send.disabled = on; stop.disabled = !on; }
+  function busy(on) { send.disabled = on; stop.disabled = !on; if (on) escalate.disabled = true; }
   function note(el, text, cls) {
     const n = document.createElement("div");
     n.className = "note" + (cls ? " " + cls : "");
@@ -174,8 +250,10 @@ function html(nonce: string, cspSource: string): string {
     if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); document.getElementById("form").requestSubmit(); }
   });
   stop.addEventListener("click", () => vscode.postMessage({ type: "stop" }));
+  escalate.addEventListener("click", () => { busy(true); vscode.postMessage({ type: "escalate" }); });
   document.getElementById("clear").addEventListener("click", () => {
     log.textContent = "";
+    escalate.disabled = true;
     vscode.postMessage({ type: "clear" });
   });
 
@@ -196,6 +274,10 @@ function html(nonce: string, cspSource: string): string {
       case "delta":
         if (current) { current.body.textContent += data.text; log.scrollTop = log.scrollHeight; }
         break;
+      case "escalating":
+        if (current) { current.body.textContent = ""; note(current.el, data.note); }
+        current = null;
+        break;
       case "end":
         if (current) {
           if (data.servedBy) note(current.el, "Answered by " + data.servedBy + " (fallback).");
@@ -203,6 +285,7 @@ function html(nonce: string, cspSource: string): string {
         }
         current = null;
         busy(false);
+        escalate.disabled = !data.canEscalate;
         break;
       case "error":
         note((current || lastUserTurn).el, data.text, "error");
