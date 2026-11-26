@@ -1,0 +1,261 @@
+{"id": "7c6ca5df26", "prompt": "fix the typo in this sentence", "label": "haiku", "source": "written"}
+{"id": "2102fc862b", "prompt": "what's the capital of australia", "label": "haiku", "source": "written"}
+{"id": "1b0df0530e", "prompt": "rename this variable to userCount", "label": "haiku", "source": "written"}
+{"id": "bc76c321e9", "prompt": "what does this error mean", "label": "haiku", "source": "written"}
+{"id": "8e3d1d160f", "prompt": "convert 5 miles to km", "label": "haiku", "source": "written"}
+{"id": "95ef45f258", "prompt": "spell check this paragraph", "label": "haiku", "source": "written"}
+{"id": "c451936c45", "prompt": "what time zone is tokyo in", "label": "haiku", "source": "written"}
+{"id": "c405a6fad3", "prompt": "explain this regex", "label": "haiku", "source": "written"}
+{"id": "c1b618b041", "prompt": "add a comment above this function", "label": "haiku", "source": "written"}
+{"id": "93794e1e0b", "prompt": "what does npm ci do", "label": "haiku", "source": "written"}
+{"id": "e1975d939e", "prompt": "is \"affect\" or \"effect\" correct here", "label": "haiku", "source": "written"}
+{"id": "b625289c40", "prompt": "give me a synonym for important", "label": "haiku", "source": "written"}
+{"id": "4361af4230", "prompt": "what's 15% of 240", "label": "haiku", "source": "written"}
+{"id": "a7c499a1cd", "prompt": "translate \"good morning\" to spanish", "label": "haiku", "source": "written"}
+{"id": "5628746a42", "prompt": "format this json", "label": "haiku", "source": "written"}
+{"id": "56140898a3", "prompt": "what year did the berlin wall fall", "label": "haiku", "source": "written"}
+{"id": "ae1179a50b", "prompt": "how do i exit vim", "label": "haiku", "source": "written"}
+{"id": "176fe5422a", "prompt": "capitalise the first letter of each word in this title", "label": "haiku", "source": "written"}
+{"id": "dd970f565a", "prompt": "what's the difference between let and const", "label": "haiku", "source": "written"}
+{"id": "fac4861485", "prompt": "write a one line docstring for this function", "label": "haiku", "source": "written"}
+{"id": "2495631740", "prompt": "how many days until christmas", "label": "haiku", "source": "written"}
+{"id": "b9775a6f57", "prompt": "what does 200 OK mean", "label": "haiku", "source": "written"}
+{"id": "911ca416c9", "prompt": "shorten this sentence", "label": "haiku", "source": "written"}
+{"id": "d2c4a5d607", "prompt": "is this email address valid format", "label": "haiku", "source": "written"}
+{"id": "a4795c7c1e", "prompt": "what is a prime number", "label": "haiku", "source": "written"}
+{"id": "c7efcf8b8f", "prompt": "give me the git command to undo the last commit", "label": "haiku", "source": "written"}
+{"id": "5c291a4a43", "prompt": "what's the plural of cactus", "label": "haiku", "source": "written"}
+{"id": "dbf24cb367", "prompt": "remove the trailing whitespace", "label": "haiku", "source": "written"}
+{"id": "e37a158acf", "prompt": "which is bigger 3/4 or 2/3", "label": "haiku", "source": "written"}
+{"id": "d978389887", "prompt": "what does the acronym API stand for", "label": "haiku", "source": "written"}
+{"id": "1223a88046", "prompt": "make this sentence sound more polite", "label": "haiku", "source": "written"}
+{"id": "eadb1691a6", "prompt": "how do i center a div", "label": "haiku", "source": "written"}
+{"id": "e75fead421", "prompt": "what's the boiling point of water in fahrenheit", "label": "haiku", "source": "written"}
+{"id": "e102abfd70", "prompt": "fix the indentation", "label": "haiku", "source": "written"}
+{"id": "6a640155ac", "prompt": "what does this one line do", "label": "haiku", "source": "written"}
+{"id": "c22b5f9178", "prompt": "hi", "label": "haiku", "source": "written"}
+{"id": "6e3f5ad7c1", "prompt": "thanks", "label": "haiku", "source": "written"}
+{"id": "fbe2ec1bb5", "prompt": "ok what next", "label": "haiku", "source": "written"}
+{"id": "fb360f9c09", "prompt": "yes", "label": "haiku", "source": "written"}
+{"id": "3f1ca4789b", "prompt": "can you confirm this is an error", "label": "haiku", "source": "written"}
+{"id": "00e3d00583", "prompt": "is that done?", "label": "haiku", "source": "written"}
+{"id": "1c14a9cb73", "prompt": "what's the keyboard shortcut to comment a line in vscode", "label": "haiku", "source": "written"}
+{"id": "e82f198445", "prompt": "define photosynthesis in one sentence", "label": "haiku", "source": "written"}
+{"id": "d0a21903d8", "prompt": "is this necessary", "label": "haiku", "source": "written"}
+{"id": "876c369347", "prompt": "give me a short message for the team saying the deploy is done", "label": "haiku", "source": "written"}
+{"id": "a4b5e6c364", "prompt": "what does the --force flag do here", "label": "haiku", "source": "written"}
+{"id": "72cfc18831", "prompt": "suggest a name for this function", "label": "haiku", "source": "written"}
+{"id": "c6ad0521ee", "prompt": "how do you say thank you in japanese", "label": "haiku", "source": "written"}
+{"id": "72a243aa2e", "prompt": "what's the syntax for a for loop in python", "label": "haiku", "source": "written"}
+{"id": "2112144b62", "prompt": "change the button colour to blue", "label": "haiku", "source": "written"}
+{"id": "ebdf6aff46", "prompt": "add a missing semicolon", "label": "haiku", "source": "written"}
+{"id": "19fe3be5ef", "prompt": "how long should i boil an egg", "label": "haiku", "source": "written"}
+{"id": "245d880fbc", "prompt": "what does TODO mean in code comments", "label": "haiku", "source": "written"}
+{"id": "ab8ce0fa1b", "prompt": "give me a title for this PR", "label": "haiku", "source": "written"}
+{"id": "e1e6c18385", "prompt": "which branch am i on", "label": "haiku", "source": "written"}
+{"id": "db80c068a6", "prompt": "what's the weather usually like in london in march", "label": "haiku", "source": "written"}
+{"id": "9030e8072c", "prompt": "round this number to two decimals", "label": "haiku", "source": "written"}
+{"id": "eafd9d6033", "prompt": "write a short thank you note to a colleague", "label": "haiku", "source": "written"}
+{"id": "b005d45323", "prompt": "reword this so it doesn't sound rude", "label": "haiku", "source": "written"}
+{"id": "f6426dc6cd", "prompt": "what port does postgres use by default", "label": "haiku", "source": "written"}
+{"id": "410f57ec75", "prompt": "explain this line of css", "label": "haiku", "source": "written"}
+{"id": "99c84e6d5a", "prompt": "fix the spelling in the commit message", "label": "haiku", "source": "written"}
+{"id": "d9846a260e", "prompt": "what is the square root of 144", "label": "haiku", "source": "written"}
+{"id": "1ba29b61bc", "prompt": "tell me a quick joke", "label": "haiku", "source": "written"}
+{"id": "02e242a86b", "prompt": "what's a good name for a golden retriever", "label": "haiku", "source": "written"}
+{"id": "0015b3253f", "prompt": "how do i print to the console in javascript", "label": "haiku", "source": "written"}
+{"id": "a732d235c9", "prompt": "is tomato a fruit", "label": "haiku", "source": "written"}
+{"id": "b5bf1d92ec", "prompt": "add a newline at the end of the file", "label": "haiku", "source": "written"}
+{"id": "f979e60efb", "prompt": "make this heading bold in markdown", "label": "haiku", "source": "written"}
+{"id": "bc12db1817", "prompt": "what's the command to list docker containers", "label": "haiku", "source": "written"}
+{"id": "251b748419", "prompt": "quick question, is null == undefined in js", "label": "haiku", "source": "written"}
+{"id": "1b1e44f0b2", "prompt": "what does this abbreviation mean: ETA", "label": "haiku", "source": "written"}
+{"id": "013275dd4b", "prompt": "give me three words that rhyme with light", "label": "haiku", "source": "written"}
+{"id": "b0ec9bb9f9", "prompt": "how do i convert a string to a number in python", "label": "haiku", "source": "written"}
+{"id": "7585fcd20f", "prompt": "copy the pr description to clipboard", "label": "haiku", "source": "written"}
+{"id": "81f6761114", "prompt": "all good right?", "label": "haiku", "source": "written"}
+{"id": "8ce1a827e8", "prompt": "what do i do next", "label": "haiku", "source": "written"}
+{"id": "bdbbb45969", "prompt": "what's the difference between a list and a tuple", "label": "haiku", "source": "written"}
+{"id": "65d3b7bcb7", "prompt": "summarise this paragraph in one line", "label": "haiku", "source": "written"}
+{"id": "1658c2a95a", "prompt": "lint this file", "label": "haiku", "source": "written"}
+{"id": "f053315e15", "prompt": "what is 2 to the power of 10", "label": "haiku", "source": "written"}
+{"id": "496679bf4e", "prompt": "write a function that validates an email address", "label": "sonnet", "source": "written"}
+{"id": "b54c7e9671", "prompt": "add unit tests for the date parsing helper", "label": "sonnet", "source": "written"}
+{"id": "46f7c9869e", "prompt": "write an email to my landlord asking to fix the heating", "label": "sonnet", "source": "written"}
+{"id": "db60d63d67", "prompt": "summarise this article in five bullet points", "label": "sonnet", "source": "written"}
+{"id": "6a1e43d347", "prompt": "help me research people born in 2005", "label": "sonnet", "source": "written"}
+{"id": "92660bde8c", "prompt": "give me a 7 day meal plan for a vegetarian", "label": "sonnet", "source": "written"}
+{"id": "d82b2b8e36", "prompt": "implement a login endpoint with jwt", "label": "sonnet", "source": "written"}
+{"id": "3fb5a00231", "prompt": "fix the bug where the form submits twice", "label": "sonnet", "source": "written"}
+{"id": "a149400365", "prompt": "create a react component for a modal dialog", "label": "sonnet", "source": "written"}
+{"id": "6533b125c8", "prompt": "write a cover letter for a junior developer role", "label": "sonnet", "source": "written"}
+{"id": "9335e7dbc5", "prompt": "explain how http caching works", "label": "sonnet", "source": "written"}
+{"id": "8b91c0da85", "prompt": "refactor this function to use async await", "label": "sonnet", "source": "written"}
+{"id": "864114d5c6", "prompt": "draft a message to my team about the new meeting schedule", "label": "sonnet", "source": "written"}
+{"id": "dcdbe55652", "prompt": "give me 10 ideas for a birthday party for a 6 year old", "label": "sonnet", "source": "written"}
+{"id": "2b14372a07", "prompt": "add pagination to the users table", "label": "sonnet", "source": "written"}
+{"id": "10dec9e04d", "prompt": "write a sql query that returns the top 5 customers by revenue", "label": "sonnet", "source": "written"}
+{"id": "0cc358acbd", "prompt": "proofread my essay and improve the flow", "label": "sonnet", "source": "written"}
+{"id": "900d7b3540", "prompt": "build a simple todo app in vue", "label": "sonnet", "source": "written"}
+{"id": "befc25fbdb", "prompt": "what are the main causes of inflation", "label": "sonnet", "source": "written"}
+{"id": "0069d27301", "prompt": "write a python script that renames all files in a folder by date", "label": "sonnet", "source": "written"}
+{"id": "d74ff92556", "prompt": "add input validation to the signup form", "label": "sonnet", "source": "written"}
+{"id": "66736cc02b", "prompt": "compare react and vue for a small project", "label": "sonnet", "source": "written"}
+{"id": "f6a9f94fd3", "prompt": "help me plan a 3 day trip to rome", "label": "sonnet", "source": "written"}
+{"id": "241bec8f3e", "prompt": "write a product description for a stainless steel water bottle", "label": "sonnet", "source": "written"}
+{"id": "f7e9c494fd", "prompt": "convert this class component to hooks", "label": "sonnet", "source": "written"}
+{"id": "4b0eadb5e5", "prompt": "explain the difference between tcp and udp with examples", "label": "sonnet", "source": "written"}
+{"id": "fd8e69cc0c", "prompt": "write a bash script that backs up a folder to s3 every night", "label": "sonnet", "source": "written"}
+{"id": "122627f49f", "prompt": "create a csv parser that handles quoted fields", "label": "sonnet", "source": "written"}
+{"id": "7b15811845", "prompt": "draft a linkedin post about finishing my first marathon", "label": "sonnet", "source": "written"}
+{"id": "ee44cb5c86", "prompt": "add dark mode support to the settings page", "label": "sonnet", "source": "written"}
+{"id": "d30c24a024", "prompt": "write a story for kids about a brave turtle", "label": "sonnet", "source": "written"}
+{"id": "44eed30629", "prompt": "give me a workout plan for building strength at home", "label": "sonnet", "source": "written"}
+{"id": "fc51ac7018", "prompt": "implement rate limiting on the api", "label": "sonnet", "source": "written"}
+{"id": "12d130cdbc", "prompt": "write the release notes for version 2.3", "label": "sonnet", "source": "written"}
+{"id": "ab8535d1ea", "prompt": "add error handling to this fetch call", "label": "sonnet", "source": "written"}
+{"id": "5e8f0c97f5", "prompt": "how do i set up a python virtual environment and install requirements", "label": "sonnet", "source": "written"}
+{"id": "c62a2c89d2", "prompt": "make a study schedule for my exams next month", "label": "sonnet", "source": "written"}
+{"id": "4c5eb1c438", "prompt": "write a function to deep clone an object without lodash", "label": "sonnet", "source": "written"}
+{"id": "55de82677d", "prompt": "explain how vaccines work to a teenager", "label": "sonnet", "source": "written"}
+{"id": "0a8927be12", "prompt": "write a daily standup update from these notes", "label": "sonnet", "source": "written"}
+{"id": "7c18850178", "prompt": "create a dockerfile for this node app", "label": "sonnet", "source": "written"}
+{"id": "82fcc84098", "prompt": "generate test data for 50 fake users", "label": "sonnet", "source": "written"}
+{"id": "e212a12a67", "prompt": "give me a message i can send to the other dev explaining this fix", "label": "sonnet", "source": "written"}
+{"id": "27c512e75d", "prompt": "what should i consider when buying a used car", "label": "sonnet", "source": "written"}
+{"id": "479e814680", "prompt": "write a regex that matches uk postcodes and explain it", "label": "sonnet", "source": "written"}
+{"id": "80443c4742", "prompt": "build a contact form that sends an email", "label": "sonnet", "source": "written"}
+{"id": "23e9eb9313", "prompt": "write a 300 word blog intro about remote work", "label": "sonnet", "source": "written"}
+{"id": "9387e1e37e", "prompt": "fix the failing test in time-ago.test.ts", "label": "sonnet", "source": "written"}
+{"id": "c878bbb159", "prompt": "add a loading spinner while the data fetches", "label": "sonnet", "source": "written"}
+{"id": "548f18be06", "prompt": "translate this paragraph to french and keep the tone formal", "label": "sonnet", "source": "written"}
+{"id": "ad1908c6ee", "prompt": "outline a presentation about our q3 results", "label": "sonnet", "source": "written"}
+{"id": "b603dcf494", "prompt": "write a script to find duplicate images in a folder", "label": "sonnet", "source": "written"}
+{"id": "1770d96078", "prompt": "the export page refreshes fully on download, fix that", "label": "sonnet", "source": "written"}
+{"id": "a17ba4fb5c", "prompt": "how do i back up a mongodb database", "label": "sonnet", "source": "written"}
+{"id": "2a07bf3418", "prompt": "explain what a vapid key is and give an example value", "label": "sonnet", "source": "written"}
+{"id": "cec85464b5", "prompt": "write a readme for this project", "label": "sonnet", "source": "written"}
+{"id": "0eab4bc0ad", "prompt": "suggest a database schema for a small library app", "label": "sonnet", "source": "written"}
+{"id": "dd938529ab", "prompt": "add a search box that filters the list as you type", "label": "sonnet", "source": "written"}
+{"id": "a32a5fdc5c", "prompt": "write a polite complaint to an airline about lost luggage", "label": "sonnet", "source": "written"}
+{"id": "2c274e41fe", "prompt": "create a budget spreadsheet layout for a household", "label": "sonnet", "source": "written"}
+{"id": "97dca9222e", "prompt": "write a function that converts markdown to html", "label": "sonnet", "source": "written"}
+{"id": "411217ddfa", "prompt": "give me feedback on this short poem", "label": "sonnet", "source": "written"}
+{"id": "f66535a07f", "prompt": "explain recursion with a simple example", "label": "sonnet", "source": "written"}
+{"id": "a07c9cf9ac", "prompt": "add a retry with backoff to this request", "label": "sonnet", "source": "written"}
+{"id": "a5bc69c414", "prompt": "help me write a toast for my sister's wedding", "label": "sonnet", "source": "written"}
+{"id": "a673c4948b", "prompt": "what are the pros and cons of electric cars", "label": "sonnet", "source": "written"}
+{"id": "79debcbc55", "prompt": "build a cli that counts words in a file", "label": "sonnet", "source": "written"}
+{"id": "efcb3ec7fb", "prompt": "write a lesson plan on fractions for 10 year olds", "label": "sonnet", "source": "written"}
+{"id": "dbdae47e7d", "prompt": "make this endpoint return paginated results", "label": "sonnet", "source": "written"}
+{"id": "d199d14b57", "prompt": "rewrite this paragraph for a 5th grade reading level", "label": "sonnet", "source": "written"}
+{"id": "56b9b3267e", "prompt": "write a cron job that cleans files older than 24 hours", "label": "sonnet", "source": "written"}
+{"id": "8520aa9f50", "prompt": "create a landing page for a bakery", "label": "sonnet", "source": "written"}
+{"id": "e75fd4754d", "prompt": "give me interview questions for a frontend developer", "label": "sonnet", "source": "written"}
+{"id": "93ff08da39", "prompt": "implement a debounce hook", "label": "sonnet", "source": "written"}
+{"id": "7398ea0c4e", "prompt": "what is the history of the roman empire in brief", "label": "sonnet", "source": "written"}
+{"id": "11d8f926f9", "prompt": "write a unit test for the shopping cart total", "label": "sonnet", "source": "written"}
+{"id": "d6cbc7a072", "prompt": "suggest 20 feature ideas for a crm app", "label": "sonnet", "source": "written"}
+{"id": "4aad96679e", "prompt": "explain this stack trace and fix it", "label": "sonnet", "source": "written"}
+{"id": "211abbc5be", "prompt": "create a handoff document for the next session", "label": "sonnet", "source": "written"}
+{"id": "9f6c7dc46e", "prompt": "write an apology email for missing the deadline", "label": "sonnet", "source": "written"}
+{"id": "85a21e0cd9", "prompt": "i want to create a model whose work is to predict what the human brain is thinking. key things that the model should be trained on is that train the model on human daily tasks. what human does when he wakes up or go to sleep. train it on all those intent and then see the result", "label": "opus", "source": "written"}
+{"id": "cc74d6a826", "prompt": "design the architecture for a multi tenant saas app", "label": "opus", "source": "written"}
+{"id": "98eda44cf0", "prompt": "why is there a race condition in this queue consumer", "label": "opus", "source": "written"}
+{"id": "eba36ae07d", "prompt": "review this design doc and point out the risks", "label": "opus", "source": "written"}
+{"id": "d57cd1d502", "prompt": "we have a memory leak in production that only shows up after 3 days, how do i find it", "label": "opus", "source": "written"}
+{"id": "995c16b609", "prompt": "compare microservices and a monolith for our team of 6", "label": "opus", "source": "written"}
+{"id": "27dc5af4e7", "prompt": "why does the site work in incognito but fail in a normal window", "label": "opus", "source": "written"}
+{"id": "05e301cc6c", "prompt": "audit this authentication flow for security holes", "label": "opus", "source": "written"}
+{"id": "7faa322417", "prompt": "what are the trade offs between postgres and dynamodb for an event log", "label": "opus", "source": "written"}
+{"id": "00514dc9f5", "prompt": "explain the root cause of this deadlock", "label": "opus", "source": "written"}
+{"id": "93866148d9", "prompt": "plan a research project on the effect of sleep on memory", "label": "opus", "source": "written"}
+{"id": "8ffee22b9c", "prompt": "critique my startup idea and tell me where it fails", "label": "opus", "source": "written"}
+{"id": "feeb297c16", "prompt": "design a database schema that supports soft deletes, audit history and multi region", "label": "opus", "source": "written"}
+{"id": "96d99bb2be", "prompt": "how should we structure the monorepo so teams don't block each other", "label": "opus", "source": "written"}
+{"id": "cdb900a5d8", "prompt": "why does the query take 40 seconds with 200k rows when it was fast before", "label": "opus", "source": "written"}
+{"id": "8220ccc4a9", "prompt": "write a thorough analysis of the causes of the 2008 financial crisis", "label": "opus", "source": "written"}
+{"id": "427459e19d", "prompt": "i'm deciding between two job offers, help me think it through", "label": "opus", "source": "written"}
+{"id": "fd8eec70ca", "prompt": "is this caching strategy correct under concurrent writes", "label": "opus", "source": "written"}
+{"id": "8c2b1a8250", "prompt": "design an experiment to test whether the new onboarding improves retention", "label": "opus", "source": "written"}
+{"id": "6a9a4df6ec", "prompt": "explain the philosophical arguments for and against free will", "label": "opus", "source": "written"}
+{"id": "b3c7cb45be", "prompt": "review this contract and flag anything unusual", "label": "opus", "source": "written"}
+{"id": "f5f90fa25e", "prompt": "why would the build pass locally but fail in ci only on tuesdays", "label": "opus", "source": "written"}
+{"id": "f7a63a431c", "prompt": "propose a migration strategy from the legacy auth system with zero downtime", "label": "opus", "source": "written"}
+{"id": "a0e5cc10d2", "prompt": "what could cause intermittent 502s only for logged in users", "label": "opus", "source": "written"}
+{"id": "7189225c08", "prompt": "help me design a machine learning pipeline for fraud detection", "label": "opus", "source": "written"}
+{"id": "f93f67dea1", "prompt": "evaluate whether we should rewrite the frontend in a new framework", "label": "opus", "source": "written"}
+{"id": "accea64a71", "prompt": "what are the second order effects of raising minimum wage", "label": "opus", "source": "written"}
+{"id": "80703e65ae", "prompt": "debug why the websocket drops after exactly 60 seconds", "label": "opus", "source": "written"}
+{"id": "98e4f474ee", "prompt": "design a rate limiter that works across multiple servers", "label": "opus", "source": "written"}
+{"id": "9d6c1a1328", "prompt": "assess the security of this file upload feature", "label": "opus", "source": "written"}
+{"id": "1896599507", "prompt": "i need a thesis outline on climate migration with a strong argument", "label": "opus", "source": "written"}
+{"id": "0e19fec914", "prompt": "why is the pagination returning duplicates across pages", "label": "opus", "source": "written"}
+{"id": "56a3e0a510", "prompt": "how would you architect a real time collaborative editor", "label": "opus", "source": "written"}
+{"id": "2547eda54b", "prompt": "compare three approaches to handling payments and recommend one", "label": "opus", "source": "written"}
+{"id": "6c8c08551c", "prompt": "what is wrong with this consensus algorithm", "label": "opus", "source": "written"}
+{"id": "6a6d46468c", "prompt": "analyse this dataset summary and tell me what hypotheses are worth testing", "label": "opus", "source": "written"}
+{"id": "d60cfb36f1", "prompt": "before merging to main, what could go wrong with the auto deploy and how do we protect against it", "label": "opus", "source": "written"}
+{"id": "10486fbba4", "prompt": "design a classifier that picks which ai model to use for a prompt", "label": "opus", "source": "written"}
+{"id": "e5e8636807", "prompt": "explain why this optimisation made the code slower", "label": "opus", "source": "written"}
+{"id": "ff8cd77bee", "prompt": "what mistakes do people make when scaling a postgres database", "label": "opus", "source": "written"}
+{"id": "b813a12efe", "prompt": "help me understand quantum entanglement properly, not the pop science version", "label": "opus", "source": "written"}
+{"id": "aa46bed497", "prompt": "review the threat model for our mobile app", "label": "opus", "source": "written"}
+{"id": "8d31593391", "prompt": "how would you detect that two accounts are the same person", "label": "opus", "source": "written"}
+{"id": "2da1e9f557", "prompt": "our scout search times out at 100k records, what's the real problem", "label": "opus", "source": "written"}
+{"id": "9276ed7e49", "prompt": "what is the best way to structure a 50 person engineering org", "label": "opus", "source": "written"}
+{"id": "85c7f9f474", "prompt": "why is this floating point calculation giving different results on arm", "label": "opus", "source": "written"}
+{"id": "0cdfe769f1", "prompt": "diagnose why memory grows on every request in this express app", "label": "opus", "source": "written"}
+{"id": "ff610744d0", "prompt": "i want to build an ai that predicts what someone will do next from their phone usage, how would i approach it", "label": "opus", "source": "written"}
+{"id": "636a40c6ce", "prompt": "give me a rigorous argument for or against universal basic income", "label": "opus", "source": "written"}
+{"id": "4148c6104b", "prompt": "plan the data model for a hospital scheduling system", "label": "opus", "source": "written"}
+{"id": "51e3a865ec", "prompt": "what's the most likely reason this distributed lock is failing", "label": "opus", "source": "written"}
+{"id": "a59d8567da", "prompt": "review my research proposal on language acquisition in children", "label": "opus", "source": "written"}
+{"id": "456d0a2747", "prompt": "design the caching layer for a news site with 10 million readers", "label": "opus", "source": "written"}
+{"id": "901453dbd2", "prompt": "explain the difference between the major interpretations of quantum mechanics", "label": "opus", "source": "written"}
+{"id": "a19b397736", "prompt": "we lost data after a failover, walk me through what probably happened", "label": "opus", "source": "written"}
+{"id": "cf686e7842", "prompt": "what would a fair pricing model look like for our api", "label": "opus", "source": "written"}
+{"id": "8229fc8bca", "prompt": "how do i reason about consistency guarantees in this system", "label": "opus", "source": "written"}
+{"id": "6eb4f0044f", "prompt": "plan a strategy to grow 50 more product ideas into a roadmap with priorities", "label": "opus", "source": "written"}
+{"id": "3db8e357a9", "prompt": "what are the hidden assumptions in this business plan", "label": "opus", "source": "written"}
+{"id": "c86ac94de8", "prompt": "explain how transformers work in detail with the maths", "label": "opus", "source": "written"}
+{"id": "aff907d69b", "prompt": "migrate every test file from mocha to jest and keep going until they all pass", "label": "fable", "source": "written"}
+{"id": "41afdc7801", "prompt": "go through the whole codebase and replace the old logger, run the tests after each module", "label": "fable", "source": "written"}
+{"id": "95238abb6a", "prompt": "set up ci for this repo, fix whatever fails, and don't stop until the pipeline is green", "label": "fable", "source": "written"}
+{"id": "1de21192c7", "prompt": "upgrade all dependencies to their latest major versions and fix the breaking changes", "label": "fable", "source": "written"}
+{"id": "fe9e72e623", "prompt": "add 200k records to the database and test the search performance end to end", "label": "fable", "source": "written"}
+{"id": "851fd598ec", "prompt": "switch to dev, create a branch, fix these three bugs, run the full test suite and open a pr", "label": "fable", "source": "written"}
+{"id": "6ea7f0fc11", "prompt": "convert this project from javascript to typescript file by file", "label": "fable", "source": "written"}
+{"id": "acd2d25ce9", "prompt": "automate the release process: bump version, build, tag, publish and write the changelog", "label": "fable", "source": "written"}
+{"id": "2dbd1545f3", "prompt": "run the test suite, fix every failure, and repeat until it passes", "label": "fable", "source": "written"}
+{"id": "ab9235c082", "prompt": "rewrite all the api docs from the source code and check each example actually runs", "label": "fable", "source": "written"}
+{"id": "2eb5858c79", "prompt": "test the whole app with playwright, fix what you find, then test again", "label": "fable", "source": "written"}
+{"id": "5bf441bdda", "prompt": "go through every page and make it accessible, checking with a screen reader script", "label": "fable", "source": "written"}
+{"id": "cfcd0a1448", "prompt": "build a scraper that collects prices from these 20 sites every hour and stores them", "label": "fable", "source": "written"}
+{"id": "404b04ed4c", "prompt": "write a detailed report with images as both markdown and pdf and iterate until it looks right", "label": "fable", "source": "written"}
+{"id": "4ba69f500e", "prompt": "split this monolith into three services step by step, deploying each one", "label": "fable", "source": "written"}
+{"id": "f80149b49e", "prompt": "refactor the entire data layer to the repository pattern across all modules", "label": "fable", "source": "written"}
+{"id": "955564b4cc", "prompt": "fix the build, then the lint errors, then the type errors, then run the tests", "label": "fable", "source": "written"}
+{"id": "6286b9896b", "prompt": "add i18n support to every screen in the app", "label": "fable", "source": "written"}
+{"id": "141778c35d", "prompt": "continue the previous session: read the handoff, finish the remaining tasks and verify each", "label": "fable", "source": "written"}
+{"id": "2ca6408a9f", "prompt": "benchmark five different approaches, write the results up, and pick the fastest", "label": "fable", "source": "written"}
+{"id": "8395e61859", "prompt": "migrate the database from mysql to postgres including the data and all the queries", "label": "fable", "source": "written"}
+{"id": "c247d2c95b", "prompt": "set up the project from scratch: repo, linting, tests, ci, docker, deploy script", "label": "fable", "source": "written"}
+{"id": "d1b5887a12", "prompt": "go through all 300 issues and label, close or respond to each one", "label": "fable", "source": "written"}
+{"id": "b40426b0da", "prompt": "keep iterating on the layout until all visual regression tests pass", "label": "fable", "source": "written"}
+{"id": "3c81d60bd6", "prompt": "generate the whole crud api for every table in the schema with tests", "label": "fable", "source": "written"}
+{"id": "1c154674a4", "prompt": "clean up the server: find what's filling the disk, remove old jobs, and set up automatic cleanup", "label": "fable", "source": "written"}
+{"id": "df86808663", "prompt": "audit every dependency for vulnerabilities and upgrade or replace each one", "label": "fable", "source": "written"}
+{"id": "7d0683a316", "prompt": "port the mobile app from react native to flutter screen by screen", "label": "fable", "source": "written"}
+{"id": "5ba497d5c0", "prompt": "run the migration on staging, check the data, fix the issues, then do production", "label": "fable", "source": "written"}
+{"id": "56d1546643", "prompt": "build the full feature: schema, api, ui, tests and docs, and make sure it works end to end", "label": "fable", "source": "written"}
+{"id": "6b1c50627e", "prompt": "write a script that runs nightly, pulls the reports, checks them and emails a summary, and test it", "label": "fable", "source": "written"}
+{"id": "0c2bd3cab0", "prompt": "take this spreadsheet of 500 tasks and create tickets for each with estimates", "label": "fable", "source": "written"}
+{"id": "287e694bb0", "prompt": "implement the design from these 12 figma screens, all of them", "label": "fable", "source": "written"}
+{"id": "aacbb8c7c0", "prompt": "do a complete security hardening pass across the whole repo and verify each fix", "label": "fable", "source": "written"}
+{"id": "d83f95d2ce", "prompt": "step by step, set up monitoring, alerts and dashboards for every service", "label": "fable", "source": "written"}
+{"id": "52e892877c", "prompt": "keep running the load test and tuning the config until p99 is under 200ms", "label": "fable", "source": "written"}
+{"id": "fb970707c5", "prompt": "rewrite the test data generator and regenerate the fixtures for every module", "label": "fable", "source": "written"}
+{"id": "1058ba1cb5", "prompt": "remove all usages of the deprecated api across the codebase and run the tests after each change", "label": "fable", "source": "written"}
+{"id": "bddb36924e", "prompt": "plan and execute the move from heroku to aws, service by service", "label": "fable", "source": "written"}
+{"id": "5550d3b710", "prompt": "translate the entire documentation site into spanish and german", "label": "fable", "source": "written"}

@@ -317,7 +317,10 @@
   "scripts": {
     "compile": "tsc -p .",
     "watch": "tsc -w -p .",
-    "test": "tsc -p . && node --test out/test/*.test.js"
+    "test": "tsc -p . && node --test out/test/*.test.js",
+    "build:web": "tsc -p . && node web/build.mjs",
+    "extract": "node ml/extract.mjs",
+    "train": "tsc -p . && node ml/extract.mjs && node ml/train.mjs"
   },
   "dependencies": {
     "@anthropic-ai/bedrock-sdk": "^1.1.0",

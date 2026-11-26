@@ -1,0 +1,261 @@
+haiku	fix the typo in this sentence
+haiku	what's the capital of australia
+haiku	rename this variable to userCount
+haiku	what does this error mean
+haiku	convert 5 miles to km
+haiku	spell check this paragraph
+haiku	what time zone is tokyo in
+haiku	explain this regex
+haiku	add a comment above this function
+haiku	what does npm ci do
+haiku	is "affect" or "effect" correct here
+haiku	give me a synonym for important
+haiku	what's 15% of 240
+haiku	translate "good morning" to spanish
+haiku	format this json
+haiku	what year did the berlin wall fall
+haiku	how do i exit vim
+haiku	capitalise the first letter of each word in this title
+haiku	what's the difference between let and const
+haiku	write a one line docstring for this function
+haiku	how many days until christmas
+haiku	what does 200 OK mean
+haiku	shorten this sentence
+haiku	is this email address valid format
+haiku	what is a prime number
+haiku	give me the git command to undo the last commit
+haiku	what's the plural of cactus
+haiku	remove the trailing whitespace
+haiku	which is bigger 3/4 or 2/3
+haiku	what does the acronym API stand for
+haiku	make this sentence sound more polite
+haiku	how do i center a div
+haiku	what's the boiling point of water in fahrenheit
+haiku	fix the indentation
+haiku	what does this one line do
+haiku	hi
+haiku	thanks
+haiku	ok what next
+haiku	yes
+haiku	can you confirm this is an error
+haiku	is that done?
+haiku	what's the keyboard shortcut to comment a line in vscode
+haiku	define photosynthesis in one sentence
+haiku	is this necessary
+haiku	give me a short message for the team saying the deploy is done
+haiku	what does the --force flag do here
+haiku	suggest a name for this function
+haiku	how do you say thank you in japanese
+haiku	what's the syntax for a for loop in python
+haiku	change the button colour to blue
+haiku	add a missing semicolon
+haiku	how long should i boil an egg
+haiku	what does TODO mean in code comments
+haiku	give me a title for this PR
+haiku	which branch am i on
+haiku	what's the weather usually like in london in march
+haiku	round this number to two decimals
+haiku	write a short thank you note to a colleague
+haiku	reword this so it doesn't sound rude
+haiku	what port does postgres use by default
+haiku	explain this line of css
+haiku	fix the spelling in the commit message
+haiku	what is the square root of 144
+haiku	tell me a quick joke
+haiku	what's a good name for a golden retriever
+haiku	how do i print to the console in javascript
+haiku	is tomato a fruit
+haiku	add a newline at the end of the file
+haiku	make this heading bold in markdown
+haiku	what's the command to list docker containers
+haiku	quick question, is null == undefined in js
+haiku	what does this abbreviation mean: ETA
+haiku	give me three words that rhyme with light
+haiku	how do i convert a string to a number in python
+haiku	copy the pr description to clipboard
+haiku	all good right?
+haiku	what do i do next
+haiku	what's the difference between a list and a tuple
+haiku	summarise this paragraph in one line
+haiku	lint this file
+haiku	what is 2 to the power of 10
+sonnet	write a function that validates an email address
+sonnet	add unit tests for the date parsing helper
+sonnet	write an email to my landlord asking to fix the heating
+sonnet	summarise this article in five bullet points
+sonnet	help me research people born in 2005
+sonnet	give me a 7 day meal plan for a vegetarian
+sonnet	implement a login endpoint with jwt
+sonnet	fix the bug where the form submits twice
+sonnet	create a react component for a modal dialog
+sonnet	write a cover letter for a junior developer role
+sonnet	explain how http caching works
+sonnet	refactor this function to use async await
+sonnet	draft a message to my team about the new meeting schedule
+sonnet	give me 10 ideas for a birthday party for a 6 year old
+sonnet	add pagination to the users table
+sonnet	write a sql query that returns the top 5 customers by revenue
+sonnet	proofread my essay and improve the flow
+sonnet	build a simple todo app in vue
+sonnet	what are the main causes of inflation
+sonnet	write a python script that renames all files in a folder by date
+sonnet	add input validation to the signup form
+sonnet	compare react and vue for a small project
+sonnet	help me plan a 3 day trip to rome
+sonnet	write a product description for a stainless steel water bottle
+sonnet	convert this class component to hooks
+sonnet	explain the difference between tcp and udp with examples
+sonnet	write a bash script that backs up a folder to s3 every night
+sonnet	create a csv parser that handles quoted fields
+sonnet	draft a linkedin post about finishing my first marathon
+sonnet	add dark mode support to the settings page
+sonnet	write a story for kids about a brave turtle
+sonnet	give me a workout plan for building strength at home
+sonnet	implement rate limiting on the api
+sonnet	write the release notes for version 2.3
+sonnet	add error handling to this fetch call
+sonnet	how do i set up a python virtual environment and install requirements
+sonnet	make a study schedule for my exams next month
+sonnet	write a function to deep clone an object without lodash
+sonnet	explain how vaccines work to a teenager
+sonnet	write a daily standup update from these notes
+sonnet	create a dockerfile for this node app
+sonnet	generate test data for 50 fake users
+sonnet	give me a message i can send to the other dev explaining this fix
+sonnet	what should i consider when buying a used car
+sonnet	write a regex that matches uk postcodes and explain it
+sonnet	build a contact form that sends an email
+sonnet	write a 300 word blog intro about remote work
+sonnet	fix the failing test in time-ago.test.ts
+sonnet	add a loading spinner while the data fetches
+sonnet	translate this paragraph to french and keep the tone formal
+sonnet	outline a presentation about our q3 results
+sonnet	write a script to find duplicate images in a folder
+sonnet	the export page refreshes fully on download, fix that
+sonnet	how do i back up a mongodb database
+sonnet	explain what a vapid key is and give an example value
+sonnet	write a readme for this project
+sonnet	suggest a database schema for a small library app
+sonnet	add a search box that filters the list as you type
+sonnet	write a polite complaint to an airline about lost luggage
+sonnet	create a budget spreadsheet layout for a household
+sonnet	write a function that converts markdown to html
+sonnet	give me feedback on this short poem
+sonnet	explain recursion with a simple example
+sonnet	add a retry with backoff to this request
+sonnet	help me write a toast for my sister's wedding
+sonnet	what are the pros and cons of electric cars
+sonnet	build a cli that counts words in a file
+sonnet	write a lesson plan on fractions for 10 year olds
+sonnet	make this endpoint return paginated results
+sonnet	rewrite this paragraph for a 5th grade reading level
+sonnet	write a cron job that cleans files older than 24 hours
+sonnet	create a landing page for a bakery
+sonnet	give me interview questions for a frontend developer
+sonnet	implement a debounce hook
+sonnet	what is the history of the roman empire in brief
+sonnet	write a unit test for the shopping cart total
+sonnet	suggest 20 feature ideas for a crm app
+sonnet	explain this stack trace and fix it
+sonnet	create a handoff document for the next session
+sonnet	write an apology email for missing the deadline
+opus	i want to create a model whose work is to predict what the human brain is thinking. key things that the model should be trained on is that train the model on human daily tasks. what human does when he wakes up or go to sleep. train it on all those intent and then see the result
+opus	design the architecture for a multi tenant saas app
+opus	why is there a race condition in this queue consumer
+opus	review this design doc and point out the risks
+opus	we have a memory leak in production that only shows up after 3 days, how do i find it
+opus	compare microservices and a monolith for our team of 6
+opus	why does the site work in incognito but fail in a normal window
+opus	audit this authentication flow for security holes
+opus	what are the trade offs between postgres and dynamodb for an event log
+opus	explain the root cause of this deadlock
+opus	plan a research project on the effect of sleep on memory
+opus	critique my startup idea and tell me where it fails
+opus	design a database schema that supports soft deletes, audit history and multi region
+opus	how should we structure the monorepo so teams don't block each other
+opus	why does the query take 40 seconds with 200k rows when it was fast before
+opus	write a thorough analysis of the causes of the 2008 financial crisis
+opus	i'm deciding between two job offers, help me think it through
+opus	is this caching strategy correct under concurrent writes
+opus	design an experiment to test whether the new onboarding improves retention
+opus	explain the philosophical arguments for and against free will
+opus	review this contract and flag anything unusual
+opus	why would the build pass locally but fail in ci only on tuesdays
+opus	propose a migration strategy from the legacy auth system with zero downtime
+opus	what could cause intermittent 502s only for logged in users
+opus	help me design a machine learning pipeline for fraud detection
+opus	evaluate whether we should rewrite the frontend in a new framework
+opus	what are the second order effects of raising minimum wage
+opus	debug why the websocket drops after exactly 60 seconds
+opus	design a rate limiter that works across multiple servers
+opus	assess the security of this file upload feature
+opus	i need a thesis outline on climate migration with a strong argument
+opus	why is the pagination returning duplicates across pages
+opus	how would you architect a real time collaborative editor
+opus	compare three approaches to handling payments and recommend one
+opus	what is wrong with this consensus algorithm
+opus	analyse this dataset summary and tell me what hypotheses are worth testing
+opus	before merging to main, what could go wrong with the auto deploy and how do we protect against it
+opus	design a classifier that picks which ai model to use for a prompt
+opus	explain why this optimisation made the code slower
+opus	what mistakes do people make when scaling a postgres database
+opus	help me understand quantum entanglement properly, not the pop science version
+opus	review the threat model for our mobile app
+opus	how would you detect that two accounts are the same person
+opus	our scout search times out at 100k records, what's the real problem
+opus	what is the best way to structure a 50 person engineering org
+opus	why is this floating point calculation giving different results on arm
+opus	diagnose why memory grows on every request in this express app
+opus	i want to build an ai that predicts what someone will do next from their phone usage, how would i approach it
+opus	give me a rigorous argument for or against universal basic income
+opus	plan the data model for a hospital scheduling system
+opus	what's the most likely reason this distributed lock is failing
+opus	review my research proposal on language acquisition in children
+opus	design the caching layer for a news site with 10 million readers
+opus	explain the difference between the major interpretations of quantum mechanics
+opus	we lost data after a failover, walk me through what probably happened
+opus	what would a fair pricing model look like for our api
+opus	how do i reason about consistency guarantees in this system
+opus	plan a strategy to grow 50 more product ideas into a roadmap with priorities
+opus	what are the hidden assumptions in this business plan
+opus	explain how transformers work in detail with the maths
+fable	migrate every test file from mocha to jest and keep going until they all pass
+fable	go through the whole codebase and replace the old logger, run the tests after each module
+fable	set up ci for this repo, fix whatever fails, and don't stop until the pipeline is green
+fable	upgrade all dependencies to their latest major versions and fix the breaking changes
+fable	add 200k records to the database and test the search performance end to end
+fable	switch to dev, create a branch, fix these three bugs, run the full test suite and open a pr
+fable	convert this project from javascript to typescript file by file
+fable	automate the release process: bump version, build, tag, publish and write the changelog
+fable	run the test suite, fix every failure, and repeat until it passes
+fable	rewrite all the api docs from the source code and check each example actually runs
+fable	test the whole app with playwright, fix what you find, then test again
+fable	go through every page and make it accessible, checking with a screen reader script
+fable	build a scraper that collects prices from these 20 sites every hour and stores them
+fable	write a detailed report with images as both markdown and pdf and iterate until it looks right
+fable	split this monolith into three services step by step, deploying each one
+fable	refactor the entire data layer to the repository pattern across all modules
+fable	fix the build, then the lint errors, then the type errors, then run the tests
+fable	add i18n support to every screen in the app
+fable	continue the previous session: read the handoff, finish the remaining tasks and verify each
+fable	benchmark five different approaches, write the results up, and pick the fastest
+fable	migrate the database from mysql to postgres including the data and all the queries
+fable	set up the project from scratch: repo, linting, tests, ci, docker, deploy script
+fable	go through all 300 issues and label, close or respond to each one
+fable	keep iterating on the layout until all visual regression tests pass
+fable	generate the whole crud api for every table in the schema with tests
+fable	clean up the server: find what's filling the disk, remove old jobs, and set up automatic cleanup
+fable	audit every dependency for vulnerabilities and upgrade or replace each one
+fable	port the mobile app from react native to flutter screen by screen
+fable	run the migration on staging, check the data, fix the issues, then do production
+fable	build the full feature: schema, api, ui, tests and docs, and make sure it works end to end
+fable	write a script that runs nightly, pulls the reports, checks them and emails a summary, and test it
+fable	take this spreadsheet of 500 tasks and create tickets for each with estimates
+fable	implement the design from these 12 figma screens, all of them
+fable	do a complete security hardening pass across the whole repo and verify each fix
+fable	step by step, set up monitoring, alerts and dashboards for every service
+fable	keep running the load test and tuning the config until p99 is under 200ms
+fable	rewrite the test data generator and regenerate the fixtures for every module
+fable	remove all usages of the deprecated api across the codebase and run the tests after each change
+fable	plan and execute the move from heroku to aws, service by service
+fable	translate the entire documentation site into spanish and german

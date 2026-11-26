@@ -1,6 +1,7 @@
 import { readFileSync } from "node:fs";
 import * as path from "node:path";
 import * as vscode from "vscode";
+import { ClassifierModel } from "../core/features";
 import { ModelRegistry, validateRegistry } from "../core/registry";
 import { FAMILIES, Family, FamilyPreference, ProviderName, ReleaseChannel, RouterSettings } from "../core/types";
 import { ProviderOptions } from "../providers/provider";
@@ -61,4 +62,14 @@ export function loadRegistry(extensionPath: string): ModelRegistry {
 /** Automatic (model-initiated) escalations allowed per request. */
 export function maxAutoEscalations(): number {
   return vscode.workspace.getConfiguration(SECTION).get<number>("escalation.maxAuto", 1);
+}
+
+/** The bundled trained classifier, or undefined if it is missing or unreadable (the keyword rules then decide). */
+export function loadClassifierModel(extensionPath: string): ClassifierModel | undefined {
+  try {
+    const model = JSON.parse(readFileSync(path.join(extensionPath, "resources", "classifier-model.json"), "utf8")) as ClassifierModel;
+    return model.version === 1 && Array.isArray(model.classes) ? model : undefined;
+  } catch {
+    return undefined;
+  }
 }

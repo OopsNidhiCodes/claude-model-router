@@ -20,8 +20,9 @@ applies wins.
 3. **Workspace rules.** If the workspace declares modern toolchains
    (`package.json`, `tsconfig.json`, `pyproject.toml`, `go.mod`), pinned
    legacy-generation versions are upgraded within the same family.
-4. **Local classifier.** Keyword rules plus context size pick a family.
-   `src/core/classifier.ts` has the rules.
+4. **Local classifier.** A small trained model picks a family when it is at
+   least 50% sure; otherwise keyword rules plus context size decide.
+   `src/core/classifier.ts` has the rules, `ml/README.md` the training.
 
 Each family is then resolved to a concrete model through the per-family
 channel setting: latest, pinned snapshot, or a custom model ID. The registry
@@ -37,6 +38,9 @@ replaced via `claudeRouter.registryPath` without a new extension release.
 | `src/vscode/` | Chat webview, inline edit command, status bar, settings, workspace scanner. |
 | `test/` | Node test runner suites for the core and provider layers. |
 | `resources/models-registry.json` | Model families, versions, provider IDs, retired IDs. |
+| `web/` | Chrome extension that suggests a model family on claude.ai, using the same classifier. See `web/README.md`. |
+| `ml/` | Dataset and trainer for the prompt classifier. See `ml/README.md`. |
+| `resources/classifier-model.json` | Trained classifier used by both extensions; regenerate with `npm run train`. |
 
 ## Commands
 

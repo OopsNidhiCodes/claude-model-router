@@ -1,0 +1,13 @@
+{
+  "manifest_version": 3,
+  "name": "Claude Router for claude.ai",
+  "version": "0.1.0",
+  "description": "Suggests which Claude model fits the prompt you are typing on claude.ai. Runs locally; nothing is sent anywhere.",
+  "content_scripts": [
+    {
+      "matches": ["https://claude.ai/*"],
+      "js": ["classifier.js", "content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}

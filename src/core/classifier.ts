@@ -1,4 +1,8 @@
+import { ClassifierModel, predict } from "./features";
 import { Classification, ClassifierInput, Family } from "./types";
+
+/** Below this the trained model is treated as unsure and the keyword rules decide. */
+export const MODEL_MIN_CONFIDENCE = 0.5;
 
 const KB = 1024;
 export const SMALL_CONTEXT_BYTES = 5 * KB;
@@ -43,7 +47,24 @@ const RULES: Rule[] = [
 // Ties resolve toward the more reliable middle tier first.
 const TIE_ORDER: Family[] = ["sonnet", "opus", "fable", "haiku"];
 
-export function classify(input: ClassifierInput): Classification {
+/**
+ * Picks a family. With a trained model, its answer is used when it is confident;
+ * otherwise (or without a model) the keyword rules below decide.
+ */
+export function classify(input: ClassifierInput, model?: ClassifierModel): Classification {
+  if (model) {
+    const p = predict(model, input.prompt);
+    const pct = Math.round(p.confidence * 100);
+    const scores = { haiku: 0, sonnet: 0, opus: 0, fable: 0 } as Record<Family, number>;
+    for (const f of Object.keys(scores) as Family[]) scores[f] = Math.round((p.probs[f] ?? 0) * 100);
+    if (p.confidence >= MODEL_MIN_CONFIDENCE) return { family: p.family, scores, reasons: [`model ${pct}% ${p.family}`] };
+    const fallback = classifyByRules(input);
+    return { ...fallback, reasons: [`model unsure (${pct}% ${p.family}), keyword rules`, ...fallback.reasons] };
+  }
+  return classifyByRules(input);
+}
+
+export function classifyByRules(input: ClassifierInput): Classification {
   const scores: Record<Family, number> = { haiku: 0, sonnet: 0, opus: 0, fable: 0 };
   const reasons: string[] = [];
 

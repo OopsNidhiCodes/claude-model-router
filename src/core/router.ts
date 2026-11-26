@@ -1,5 +1,6 @@
 import { classify } from "./classifier";
 import { isAbove } from "./escalation";
+import { ClassifierModel } from "./features";
 import { parsePrefix } from "./prefix";
 import { familyFromModelId, ModelRegistry } from "./registry";
 import { Classification, ClassifierInput, Family, ModelEntry, RouteDecision, RouterSettings } from "./types";
@@ -22,6 +23,8 @@ export interface RouteRequest {
    * classifier result; a /prefix still bypasses it.
    */
   minFamily?: Family;
+  /** Trained classifier; when absent the keyword rules decide. */
+  model?: ClassifierModel;
 }
 
 interface Resolved {
@@ -53,7 +56,7 @@ export function route(registry: ModelRegistry, req: RouteRequest): RouteDecision
   }
 
   const classifierInput: ClassifierInput = { prompt: req.prompt, contextBytes: req.contextBytes, inlineEdit: req.inlineEdit };
-  const classification = classify(classifierInput);
+  const classification = classify(classifierInput, req.model);
 
   let family: Family;
   let source: RouteDecision["source"];

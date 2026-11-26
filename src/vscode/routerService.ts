@@ -3,7 +3,8 @@ import { ModelRegistry } from "../core/registry";
 import { route, RoutingError } from "../core/router";
 import { Family, RouteDecision } from "../core/types";
 import { createProvider, fallbackServedBy, Message, MessageParam } from "../providers/provider";
-import { loadRegistry, maxTokens, readProviderOptions, readSettings } from "./config";
+import { ClassifierModel } from "../core/features";
+import { loadClassifierModel, loadRegistry, maxTokens, readProviderOptions, readSettings } from "./config";
 import { DecisionLog } from "./decisionLog";
 import { RouterStatusBar } from "./statusBar";
 import { WorkspaceScanner } from "./workspaceScanner";
@@ -26,6 +27,7 @@ export interface SendOptions {
 /** Ties the routing chain, the UI feedback layer and the network provider together. */
 export class RouterService implements vscode.Disposable {
   private registry: ModelRegistry;
+  private readonly model: ClassifierModel | undefined;
   readonly scanner: WorkspaceScanner;
   readonly statusBar = new RouterStatusBar();
   readonly log: DecisionLog;
@@ -33,6 +35,7 @@ export class RouterService implements vscode.Disposable {
   constructor(private readonly context: vscode.ExtensionContext) {
     this.log = new DecisionLog(context);
     this.registry = loadRegistry(context.extensionPath);
+    this.model = loadClassifierModel(context.extensionPath);
     this.scanner = new WorkspaceScanner(() => this.registry.data.strictModern);
     void this.scanner.scan();
     this.statusBar.showSettings(readSettings());
@@ -54,7 +57,7 @@ export class RouterService implements vscode.Disposable {
   decide(input: RoutedPrompt): RouteDecision | undefined {
     const settings = readSettings();
     try {
-      const decision = route(this.registry, { ...input, settings, strictModern: this.scanner.current.strictModern });
+      const decision = route(this.registry, { ...input, settings, strictModern: this.scanner.current.strictModern, model: this.model });
       for (const warning of decision.warnings) void vscode.window.showWarningMessage(warning);
       this.statusBar.flash(decision);
       return decision;
