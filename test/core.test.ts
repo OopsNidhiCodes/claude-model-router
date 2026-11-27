@@ -8,7 +8,7 @@ import { ESCALATE_TOKEN, isEscalationRequest, nextFamily, systemPromptFor } from
 import { parsePrefix } from "../src/core/prefix";
 import { ModelRegistry, RegistryError, validateRegistry } from "../src/core/registry";
 import { LEGACY_MAPPED_WARNING, route, RoutingError } from "../src/core/router";
-import { Family, FAMILIES, RouterSettings } from "../src/core/types";
+import { Family, FAMILIES, FAMILY_TO_TIER, RouterSettings, TIER_TO_FAMILY, TIERS } from "../src/core/types";
 import { evaluateWorkspace } from "../src/core/workspaceConstraints";
 
 const root = join(__dirname, "..", "..");
@@ -91,24 +91,29 @@ describe("prefix parser", () => {
 });
 
 describe("classifier", () => {
-  it("routes small explanation requests to haiku", () => {
-    assert.equal(classify({ prompt: "Explain this syntax error", contextBytes: 2 * KB }).family, "haiku");
+  it("judges a small explanation request trivial", () => {
+    assert.equal(classify({ prompt: "Explain this syntax error", contextBytes: 2 * KB }).tier, "trivial");
   });
 
-  it("routes implementation work to sonnet", () => {
-    assert.equal(classify({ prompt: "Build a route controller for /users", contextBytes: 20 * KB }).family, "sonnet");
+  it("judges implementation work standard", () => {
+    assert.equal(classify({ prompt: "Build a route controller for /users", contextBytes: 20 * KB }).tier, "standard");
   });
 
-  it("routes deep reasoning to opus", () => {
-    assert.equal(classify({ prompt: "Find the deep architectural memory leak", contextBytes: 40 * KB }).family, "opus");
+  it("judges deep reasoning complex", () => {
+    assert.equal(classify({ prompt: "Find the deep architectural memory leak", contextBytes: 40 * KB }).tier, "complex");
   });
 
-  it("routes agentic multi-step work to fable", () => {
-    assert.equal(classify({ prompt: "Migrate all services to the new SDK and iterate until tests pass", contextBytes: 40 * KB }).family, "fable");
+  it("judges agentic multi-step work expert", () => {
+    assert.equal(classify({ prompt: "Migrate all services to the new SDK and iterate until tests pass", contextBytes: 40 * KB }).tier, "expert");
   });
 
-  it("defaults the top tier to opus for large context with no intent", () => {
-    assert.equal(classify({ prompt: "look at this", contextBytes: 300 * KB }).family, "opus");
+  it("defaults the top tier to complex for large context with no intent", () => {
+    assert.equal(classify({ prompt: "look at this", contextBytes: 300 * KB }).tier, "complex");
+  });
+
+  it("maps every tier onto a family exactly once", () => {
+    assert.deepEqual(TIERS.map((t) => TIER_TO_FAMILY[t]), ["haiku", "sonnet", "opus", "fable"]);
+    for (const f of FAMILIES) assert.equal(TIER_TO_FAMILY[FAMILY_TO_TIER[f]], f);
   });
 });
 
@@ -260,7 +265,8 @@ describe("decision log", () => {
     assert.deepEqual(e.decided, { family: "haiku", source: "classifier", model: "claude-haiku-5-5" });
     assert.deepEqual(e.served, { family: "sonnet", model: "claude-sonnet-5-5" });
     assert.deepEqual(e.escalations, outcome.escalations);
-    assert.equal(e.scores?.haiku, first.classification?.scores.haiku);
+    assert.equal(e.scores?.trivial, first.classification?.scores.trivial);
+    assert.equal(e.tier, first.classification?.tier);
     assert.equal(e.stopReason, "end_turn");
   });
 

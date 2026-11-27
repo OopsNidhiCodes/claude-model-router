@@ -3,7 +3,8 @@
 // changes the model, clicks anything or makes a network request.
 (() => {
   const classify = globalThis.claudeRouterClassify;
-  if (!classify) return;
+  const tierToFamily = globalThis.claudeRouterTierToFamily;
+  if (!classify || !tierToFamily) return;
 
   const FAMILIES = {
     haiku: { name: "Haiku", color: "#4ade80" },
@@ -93,7 +94,8 @@
 
     // The web page has no attached-file size to go on, so pasted text counts as the context.
     const result = classify({ prompt, contextBytes: new TextEncoder().encode(prompt).length });
-    const family = FAMILIES[result.family];
+    // The classifier answers in difficulty tiers; the badge names a model.
+    const family = FAMILIES[tierToFamily[result.tier]];
     ensureBadge();
     nameEl.textContent = family.name;
     nameEl.style.color = family.color;

@@ -259,3 +259,196 @@
 {"id": "1058ba1cb5", "prompt": "remove all usages of the deprecated api across the codebase and run the tests after each change", "label": "fable", "source": "written"}
 {"id": "bddb36924e", "prompt": "plan and execute the move from heroku to aws, service by service", "label": "fable", "source": "written"}
 {"id": "5550d3b710", "prompt": "translate the entire documentation site into spanish and german", "label": "fable", "source": "written"}
+{"id": "e485c501af", "prompt": "why the search is slow only on live not on staging .. check deeply once", "label": "opus", "source": "written"}
+{"id": "cd01eda31b", "prompt": "the export getting timeout on 200k record .. what is the real reason behind this", "label": "opus", "source": "written"}
+{"id": "d1d4027904", "prompt": "give me 30 different idea for this crm app that we can add next quarter", "label": "opus", "source": "written"}
+{"id": "6ab55fa173", "prompt": "one thing i want to know why the session taking too much credit .. analyse properly", "label": "opus", "source": "written"}
+{"id": "3fed1e44b5", "prompt": "check this one deeply why only some user getting login issue not all", "label": "opus", "source": "written"}
+{"id": "c16aaa0657", "prompt": "we should use queue or cron for this export ?? tell me pros and cons both", "label": "opus", "source": "written"}
+{"id": "b30fc6635a", "prompt": "review this whole flow once and tell me where it can break", "label": "opus", "source": "written"}
+{"id": "0061deae08", "prompt": "the thing is same code working on staging but not on live .. find the actual root cause", "label": "opus", "source": "written"}
+{"id": "c79770e5b9", "prompt": "analyse this pasted log and tell me what is the main issue here", "label": "opus", "source": "written"}
+{"id": "2cfba59ad7", "prompt": "why the memory keep increasing after we added the sync feature .. investigate", "label": "opus", "source": "written"}
+{"id": "84d7754708", "prompt": "design the db structure for this multi tenant setup we need seperate data per company", "label": "opus", "source": "written"}
+{"id": "840be98a0e", "prompt": "give me 50 more idea for the roadmap with priority high medium low", "label": "opus", "source": "written"}
+{"id": "adbfaf9953", "prompt": "what could be the reason the filter returning duplicate record in pagination", "label": "opus", "source": "written"}
+{"id": "9802deb61f", "prompt": "audit this api once for security .. whatever hole you find tell me", "label": "opus", "source": "written"}
+{"id": "a92163d11b", "prompt": "compare these two approach for search and suggest which is better for 200k+ record", "label": "opus", "source": "written"}
+{"id": "ffdd483222", "prompt": "why the build pass on local but fail on render .. check all possibility", "label": "opus", "source": "written"}
+{"id": "af24f35442", "prompt": "this issue is intermittent only sometime happen .. how we can find root cause", "label": "opus", "source": "written"}
+{"id": "9945b0235c", "prompt": "plan the architecture for the new reporting module think about scale also", "label": "opus", "source": "written"}
+{"id": "5fa73fef6f", "prompt": "check once why the credit burning so fast in this session what is consuming", "label": "opus", "source": "written"}
+{"id": "cc5316baf5", "prompt": "tell me all the risk if we deploy this to live tommorow", "label": "opus", "source": "written"}
+{"id": "0dcc07d07a", "prompt": "the sync failing for some record only .. analyse the pattern and tell me why", "label": "opus", "source": "written"}
+{"id": "17ee769dcb", "prompt": "what is the best way to structure this project so other dev can work parallel", "label": "opus", "source": "written"}
+{"id": "abef56204e", "prompt": "review this pr fully and point out anything that can cause issue in production", "label": "opus", "source": "written"}
+{"id": "15cf6d9870", "prompt": "why same query fast for 10k but very slow for 200k .. explain properly", "label": "opus", "source": "written"}
+{"id": "a3d35cdc64", "prompt": "think and tell me should we rewrite this module or just refactor which is better", "label": "opus", "source": "written"}
+{"id": "7de61d9c69", "prompt": "there is some race condition in this export .. find it", "label": "opus", "source": "written"}
+{"id": "9742679d32", "prompt": "evaluate this third party api is it good for our case or we build our own", "label": "opus", "source": "written"}
+{"id": "c6182c0434", "prompt": "why in incognito it working but normal browser not .. root cause please", "label": "opus", "source": "written"}
+{"id": "d949420c8e", "prompt": "plan how we migrate the old data without any downtime .. step by step thinking", "label": "opus", "source": "written"}
+{"id": "83a621e45b", "prompt": "what are the hidden issue in this plan that we are not seeing", "label": "opus", "source": "written"}
+{"id": "a59413f24e", "prompt": "check the whole auth flow once and tell me if any security problem", "label": "opus", "source": "written"}
+{"id": "cc487daa52", "prompt": "why the playwright test failing randomly not every time .. investigate deeply", "label": "opus", "source": "written"}
+{"id": "2b73236bda", "prompt": "design the notification system that handle email sms and in app together", "label": "opus", "source": "written"}
+{"id": "1b80bfabfd", "prompt": "tell me what can go wrong with this auto delete after 24 hour mechanism", "label": "opus", "source": "written"}
+{"id": "960ed3a05c", "prompt": "read this pasted doc and give me proper analysis with suggestion", "label": "opus", "source": "written"}
+{"id": "5b4a4633c7", "prompt": "why we getting 502 only for logged in user .. find the reason", "label": "opus", "source": "written"}
+{"id": "8b24852f11", "prompt": "give me 20 idea how we can reduce the cost of this ai feature", "label": "opus", "source": "written"}
+{"id": "2ff6452c13", "prompt": "analyse the performance bottleneck in this page it take 40 second to load", "label": "opus", "source": "written"}
+{"id": "3c02db1eaf", "prompt": "what is the correct way to handle concurrent write here explain the issue", "label": "opus", "source": "written"}
+{"id": "430fcd33e7", "prompt": "the data mismatch happened after failover .. walk me through what probably happened", "label": "opus", "source": "written"}
+{"id": "6879ec0824", "prompt": "decide between these three pricing model which one suit our product reason properly", "label": "opus", "source": "written"}
+{"id": "2892cd4acc", "prompt": "why the job filter not catching all the relevant job .. analyse the logic", "label": "opus", "source": "written"}
+{"id": "a42b18bc35", "prompt": "give me deep analysis of this feature and what we can improve", "label": "opus", "source": "written"}
+{"id": "835a53b84d", "prompt": "is this caching approach correct when multiple user write same time ?? think properly", "label": "opus", "source": "written"}
+{"id": "d2372b0d7c", "prompt": "what will break if we change this schema now .. check all the dependency", "label": "opus", "source": "written"}
+{"id": "73fe997ca2", "prompt": "why is our api response time increasing gradually every week even though traffic is almost same .. investigate possible reasons", "label": "opus", "source": "written"}
+{"id": "9aac48e273", "prompt": "analyse this database schema and tell me if it will still work when we reach 10 million records", "label": "opus", "source": "written"}
+{"id": "60a7b4d2f0", "prompt": "we are getting different results from the same ai prompt on different runs .. explain why and how to make it consistent", "label": "opus", "source": "written"}
+{"id": "e277dff278", "prompt": "our background jobs are getting stuck randomly .. analyse the complete job lifecycle and identify weak points", "label": "opus", "source": "written"}
+{"id": "38557d68e5", "prompt": "should we use vector database or postgres pgvector for this use case .. compare properly with scale and cost", "label": "opus", "source": "written"}
+{"id": "53f38a0a81", "prompt": "why are some users seeing old data even after we update the database .. investigate caching and consistency issues", "label": "opus", "source": "written"}
+{"id": "e91460e107", "prompt": "review this entire payment flow and identify every possible failure scenario including partial payment and duplicate transactions", "label": "opus", "source": "written"}
+{"id": "fcf1d5479c", "prompt": "we want to support 10 different ai models in one product .. design the model selection and fallback architecture", "label": "opus", "source": "written"}
+{"id": "ae2ee78d92", "prompt": "analyse this code and tell me if there are any hidden dependencies that can make future changes difficult", "label": "opus", "source": "written"}
+{"id": "46fe3c3580", "prompt": "why is our database connection pool getting exhausted during peak traffic even when queries are not that heavy", "label": "opus", "source": "written"}
+{"id": "f652661d3e", "prompt": "design a proper audit logging system where we can track who changed what and when without affecting performance", "label": "opus", "source": "written"}
+{"id": "2ddd1b6547", "prompt": "our ai agent sometimes performs the wrong action even when the instruction is clear .. investigate possible causes", "label": "opus", "source": "written"}
+{"id": "4749cdec00", "prompt": "compare redis queue rabbitmq and kafka for our workflow and recommend one based on reliability and scale", "label": "opus", "source": "written"}
+{"id": "4a7a7659f1", "prompt": "how should we handle tenant isolation if multiple companies are using the same application and database", "label": "opus", "source": "written"}
+{"id": "7bd3168248", "prompt": "analyse this onboarding funnel and identify where users are most likely dropping off and what experiments we should run", "label": "opus", "source": "written"}
+{"id": "040f6951b7", "prompt": "we are spending too much on cloud infrastructure .. break down the likely cost drivers and suggest an optimisation strategy", "label": "opus", "source": "written"}
+{"id": "71d0a67f0b", "prompt": "why is our image processing pipeline producing different output for similar images .. analyse the complete processing flow", "label": "opus", "source": "written"}
+{"id": "fccbda9ebf", "prompt": "design a reliable webhook system that handles retries duplicate events failed deliveries and event ordering", "label": "opus", "source": "written"}
+{"id": "93dd7adfae", "prompt": "our application works fine with 100 concurrent users but starts failing at 1000 .. identify the likely bottlenecks", "label": "opus", "source": "written"}
+{"id": "0ae1dd46f0", "prompt": "review this ai model evaluation strategy and tell me whether the benchmarks actually measure real world performance", "label": "opus", "source": "written"}
+{"id": "8c648fd28e", "prompt": "how should we design a permission system where users can have different roles across different organisations", "label": "opus", "source": "written"}
+{"id": "b079f728b1", "prompt": "analyse this deployment architecture and identify single points of failure and disaster recovery gaps", "label": "opus", "source": "written"}
+{"id": "04f6494074", "prompt": "why are our search results relevant for some queries but completely unrelated for others .. investigate ranking and retrieval", "label": "opus", "source": "written"}
+{"id": "889060a118", "prompt": "we need to support offline mode in our application .. analyse the data sync conflicts and propose an architecture", "label": "opus", "source": "written"}
+{"id": "9502b7ee5c", "prompt": "compare server side rendering static generation and client side rendering for our product based on actual requirements", "label": "opus", "source": "written"}
+{"id": "cbf3f641ea", "prompt": "our subscription system has edge cases around upgrades downgrades refunds and renewals .. design a robust billing state machine", "label": "opus", "source": "written"}
+{"id": "d0aef65d83", "prompt": "analyse this machine learning dataset and identify leakage imbalance bias and possible problems with the labels", "label": "opus", "source": "written"}
+{"id": "2b5ece73cd", "prompt": "how can we measure whether our ai responses are actually improving after every model update", "label": "opus", "source": "written"}
+{"id": "745929bf9d", "prompt": "we have multiple services writing to the same business entity .. what consistency problems can happen and how should we solve them", "label": "opus", "source": "written"}
+{"id": "8aa40a205b", "prompt": "why does our application become unstable after running for several hours but works normally after restarting", "label": "opus", "source": "written"}
+{"id": "791f7da1c1", "prompt": "design an architecture for processing millions of uploaded documents with extraction indexing and search", "label": "opus", "source": "written"}
+{"id": "7473708b8e", "prompt": "we want to introduce ai memory in our product .. analyse what should be stored retrieved updated and forgotten", "label": "opus", "source": "written"}
+{"id": "32e62b08b2", "prompt": "review this feature requirement and identify missing edge cases before the engineering team starts development", "label": "opus", "source": "written"}
+{"id": "8a1ad48386", "prompt": "our recommendation engine is showing repetitive results .. investigate diversity ranking and user preference handling", "label": "opus", "source": "written"}
+{"id": "382f4d58cb", "prompt": "how should we handle schema changes when old and new application versions are running simultaneously", "label": "opus", "source": "written"}
+{"id": "5210c4ac21", "prompt": "analyse the security risks of allowing users to upload and execute custom scripts in our platform", "label": "opus", "source": "written"}
+{"id": "e5037e4c8f", "prompt": "we need a reliable system for processing large excel files without memory issues or request timeouts .. design the approach", "label": "opus", "source": "written"}
+{"id": "56968709af", "prompt": "why are our automated tests passing individually but failing when the complete suite runs", "label": "opus", "source": "written"}
+{"id": "39a1f338d1", "prompt": "compare building our own authentication system with using an external identity provider .. evaluate long term tradeoffs", "label": "opus", "source": "written"}
+{"id": "01069b47a8", "prompt": "design a multi step ai agent workflow where each agent has a specific responsibility and failures can be recovered", "label": "opus", "source": "written"}
+{"id": "a197b7ffee", "prompt": "analyse whether our current architecture can support real time notifications for one million users", "label": "opus", "source": "written"}
+{"id": "1f14597ac5", "prompt": "we have a lot of duplicate records coming from multiple integrations .. design a proper entity resolution strategy", "label": "opus", "source": "written"}
+{"id": "684877fe81", "prompt": "why is the model performing well on our test dataset but poorly with actual customer inputs", "label": "opus", "source": "written"}
+{"id": "c3b1eb0352", "prompt": "help me decide whether we should use a rules engine an llm or a hybrid approach for this business workflow", "label": "opus", "source": "written"}
+{"id": "27dceece11", "prompt": "review our data retention strategy and identify privacy compliance and storage cost risks", "label": "opus", "source": "written"}
+{"id": "ffa7423345", "prompt": "our application needs to process tasks in priority order but high priority tasks are blocking everything else .. analyse the scheduling design", "label": "opus", "source": "written"}
+{"id": "c1c77de643", "prompt": "design a rollback strategy for a database migration that changes millions of existing records", "label": "opus", "source": "written"}
+{"id": "22971d49c4", "prompt": "analyse this product roadmap and identify dependencies that could delay the entire release", "label": "opus", "source": "written"}
+{"id": "3eebd3585a", "prompt": "we want to introduce usage based pricing .. analyse the metering architecture billing risks and possible customer disputes", "label": "opus", "source": "written"}
+{"id": "a3db87d058", "prompt": "why is our frontend rendering components repeatedly even when the underlying data has not changed", "label": "opus", "source": "written"}
+{"id": "3ff54867ef", "prompt": "design a system that can detect anomalous user activity without generating too many false positives", "label": "opus", "source": "written"}
+{"id": "4b84f02101", "prompt": "inspect the complete repository identify all broken api endpoints fix them and verify each endpoint with actual requests", "label": "fable", "source": "written"}
+{"id": "6c22de234f", "prompt": "set up a complete local development environment install everything configure environment variables start the app and verify all major features", "label": "fable", "source": "written"}
+{"id": "91f6261939", "prompt": "take this existing application and add a complete role based access system including database changes backend middleware frontend permissions and tests", "label": "fable", "source": "written"}
+{"id": "9a40cb889c", "prompt": "find all database queries that are running without proper indexes add the required indexes and benchmark the performance before and after", "label": "fable", "source": "written"}
+{"id": "6979eb4fba", "prompt": "download these sample documents process them through our extraction pipeline identify incorrect outputs fix the extraction logic and run everything again", "label": "fable", "source": "written"}
+{"id": "06ed809f2b", "prompt": "go through the entire frontend and replace all hardcoded api urls with a centralised configuration then test development staging and production builds", "label": "fable", "source": "written"}
+{"id": "8a3c4c7d31", "prompt": "implement a complete forgot password flow including token generation email integration expiry validation password reset and automated tests", "label": "fable", "source": "written"}
+{"id": "2cbfe48762", "prompt": "find every place where errors are being silently ignored add proper error handling logging and test the affected workflows", "label": "fable", "source": "written"}
+{"id": "eeaec26e7f", "prompt": "create a complete seed script with realistic data for every database table then run it locally and verify all relationships", "label": "fable", "source": "written"}
+{"id": "977683fa96", "prompt": "analyse the complete application and add missing loading empty error and success states to every major screen", "label": "fable", "source": "written"}
+{"id": "bce4c1c8ec", "prompt": "build an automated backup and restore system for the database configure scheduled backups and verify that restoration actually works", "label": "fable", "source": "written"}
+{"id": "7bd5bcd969", "prompt": "implement a complete notification preference system where users can enable or disable email push and in app notifications separately", "label": "fable", "source": "written"}
+{"id": "3d5b433110", "prompt": "go through the complete application on mobile tablet and desktop fix all layout issues and verify every major page at each screen size", "label": "fable", "source": "written"}
+{"id": "75d315ebe4", "prompt": "create a full staging environment using docker compose configure all services and verify that the application works from a fresh setup", "label": "fable", "source": "written"}
+{"id": "e9b941594e", "prompt": "find all unnecessary database calls on the dashboard reduce the number of requests and verify that the page loads faster", "label": "fable", "source": "written"}
+{"id": "f3e10bbd48", "prompt": "implement an activity history page showing user actions with filters pagination and proper access control then test it end to end", "label": "fable", "source": "written"}
+{"id": "27c6ebf34a", "prompt": "take the existing authentication system and add refresh token rotation token expiry logout from all devices and tests", "label": "fable", "source": "written"}
+{"id": "ae1c2ed668", "prompt": "run a complete end to end test of the checkout process including success failure cancellation duplicate requests and payment retries then fix every issue", "label": "fable", "source": "written"}
+{"id": "03e807d8d5", "prompt": "go through the entire codebase and identify unused components functions dependencies and dead files remove them safely and run the full test suite", "label": "fable", "source": "written"}
+{"id": "b5cbe45c06", "prompt": "implement bulk import for csv and excel files including column mapping validation duplicate detection error reports and large file handling", "label": "fable", "source": "written"}
+{"id": "b6808a32db", "prompt": "set up a complete redis caching layer for the expensive api endpoints measure response times before and after and verify cache invalidation", "label": "fable", "source": "written"}
+{"id": "36b2907d04", "prompt": "create an admin dashboard with user management role management activity logs and system statistics connected to real backend data", "label": "fable", "source": "written"}
+{"id": "588550634b", "prompt": "implement a background job system for large exports with progress tracking retry support cancellation and downloadable results", "label": "fable", "source": "written"}
+{"id": "66115a821b", "prompt": "go through all environment variables used in the project document them create an example env file and verify the application starts correctly", "label": "fable", "source": "written"}
+{"id": "6817db5a3c", "prompt": "implement a complete file management module with upload preview download delete permissions and storage cleanup", "label": "fable", "source": "written"}
+{"id": "beb50aed6f", "prompt": "find all places where the frontend and backend data structures are inconsistent fix the contracts and verify every affected feature", "label": "fable", "source": "written"}
+{"id": "6e375b5b88", "prompt": "configure playwright to test all important user journeys run the tests in ci and fix every failure", "label": "fable", "source": "written"}
+{"id": "ddc742a97f", "prompt": "implement proper pagination sorting and filtering across all admin tables and verify that the results remain correct with 200k records", "label": "fable", "source": "written"}
+{"id": "c59eca683f", "prompt": "migrate the existing application to a new database schema preserve all existing records validate the migrated data and document the rollback procedure", "label": "fable", "source": "written"}
+{"id": "5973eac8d3", "prompt": "build a complete audit trail for all critical database updates including old values new values user identity and timestamps then test it", "label": "fable", "source": "written"}
+{"id": "6a08e4ae30", "prompt": "go through the existing api documentation compare every endpoint with the actual implementation correct outdated examples and verify the examples", "label": "fable", "source": "written"}
+{"id": "51b825c2ee", "prompt": "implement an ai powered document analysis feature including file upload extraction model calls result storage and frontend display then test the full workflow", "label": "fable", "source": "written"}
+{"id": "cab19ed596", "prompt": "set up automated dependency update checks with vulnerability scanning and ci validation then resolve all critical findings", "label": "fable", "source": "written"}
+{"id": "db4cb8d70e", "prompt": "identify all slow frontend routes measure bundle sizes split unnecessary bundles and verify the improvement after optimisation", "label": "fable", "source": "written"}
+{"id": "81c9af836f", "prompt": "implement a proper retry and dead letter queue mechanism for failed background jobs test repeated failures and recovery", "label": "fable", "source": "written"}
+{"id": "ea33c86577", "prompt": "create a complete integration with this third party api including authentication rate limits retries webhooks error handling and tests", "label": "fable", "source": "written"}
+{"id": "7eecc9d9a9", "prompt": "convert all existing database operations to transactions wherever required identify partial update risks and verify the fixes", "label": "fable", "source": "written"}
+{"id": "4795cb8c76", "prompt": "implement global search across users projects documents and activities with filters ranking pagination and performance testing", "label": "fable", "source": "written"}
+{"id": "7714717c7a", "prompt": "go through all forms in the application add frontend and backend validation consistent error messages and test invalid inputs", "label": "fable", "source": "written"}
+{"id": "0abb73e7f9", "prompt": "prepare this application for production by checking security headers cors secrets database settings logging error reporting and deployment configuration", "label": "fable", "source": "written"}
+{"id": "a108ce4a36", "prompt": "implement a complete multi tenant onboarding workflow including organisation creation invitations member roles and tenant level data isolation then test it", "label": "fable", "source": "written"}
+{"id": "36ccef1698", "prompt": "create a script that generates realistic production scale test data run it against the local database and benchmark the important queries", "label": "fable", "source": "written"}
+{"id": "840387622d", "prompt": "replace the existing file storage implementation with s3 compatible storage migrate existing files verify file access and preserve existing references", "label": "fable", "source": "written"}
+{"id": "4e5f6e21a4", "prompt": "implement real time updates for the dashboard using websockets including reconnect handling authentication and fallback behaviour", "label": "fable", "source": "written"}
+{"id": "a88243c3a7", "prompt": "identify all features that are missing automated tests create test cases for normal edge and failure scenarios and run the complete suite", "label": "fable", "source": "written"}
+{"id": "986f634faa", "prompt": "build a complete subscription lifecycle including free trial plan upgrades downgrades cancellation renewal failed payments and invoice history", "label": "fable", "source": "written"}
+{"id": "8517b11b26", "prompt": "implement a centralised logging and error monitoring setup across frontend backend and background workers then verify error tracking", "label": "fable", "source": "written"}
+{"id": "78a8b51870", "prompt": "go through the existing codebase and improve the separation between business logic database access and api controllers without changing existing behaviour", "label": "fable", "source": "written"}
+{"id": "c698b00b62", "prompt": "create a complete deployment pipeline with separate staging and production environments automated checks deployment approval and rollback", "label": "fable", "source": "written"}
+{"id": "0b117ea2f8", "prompt": "implement an automated data reconciliation script that compares records between two databases reports mismatches and safely repairs eligible records", "label": "fable", "source": "written"}
+{"id": "63361f9814", "prompt": "test the application with 500 concurrent users identify bottlenecks optimise the system and repeat the load test until the target is achieved", "label": "fable", "source": "written"}
+{"id": "4ef83ead71", "prompt": "take this feature requirement and implement everything from database design to backend api frontend ui tests documentation and final verification", "label": "fable", "source": "written"}
+{"id": "60a7cf5257", "prompt": "check this one locally fully means 200k+ record once and fix whatever break", "label": "fable", "source": "written"}
+{"id": "a32dfd20d0", "prompt": "continue the leadcrm work from the handoff .. read it and finish the remaining task", "label": "fable", "source": "written"}
+{"id": "0335d4cea3", "prompt": "run the test once locally and fix all failure then run again", "label": "fable", "source": "written"}
+{"id": "f52aa9bb1e", "prompt": "migrate all the old export code to new structure and test each one", "label": "fable", "source": "written"}
+{"id": "a094e06fc4", "prompt": "fistly start the app locally and give me cred as well then test the login", "label": "fable", "source": "written"}
+{"id": "8529961ea0", "prompt": "upgrade all the package to latest and fix the breaking change run build after each", "label": "fable", "source": "written"}
+{"id": "aa7e5a5641", "prompt": "check the export with playwright fully and fix what you find then test again", "label": "fable", "source": "written"}
+{"id": "d9e1ea4fe1", "prompt": "add 200k record in local db and test the search performance end to end", "label": "fable", "source": "written"}
+{"id": "d3f50db124", "prompt": "make sure into this one handoff all the stuff included then i will share", "label": "fable", "source": "written"}
+{"id": "684ccef6ea", "prompt": "go through all the page and fix the responsive issue one by one", "label": "fable", "source": "written"}
+{"id": "bdb567e7d0", "prompt": "setup the ci for this repo and keep fixing until the pipeline green", "label": "fable", "source": "written"}
+{"id": "e1d0f2ce2e", "prompt": "convert this whole module to typescript file by file and run tsc after each", "label": "fable", "source": "written"}
+{"id": "d9ae9b2f06", "prompt": "do the full testing on staging fix the bug then deploy to live", "label": "fable", "source": "written"}
+{"id": "6d7b95b72e", "prompt": "automate the release bump version build tag and write changelog then test it", "label": "fable", "source": "written"}
+{"id": "d2f16b7f6b", "prompt": "create branch fix these 3 bug run full test and open pr", "label": "fable", "source": "written"}
+{"id": "4676240cff", "prompt": "go through every api and add proper validation then test all endpoint", "label": "fable", "source": "written"}
+{"id": "54dd621abf", "prompt": "keep tuning the query until the 200k search come under 2 second", "label": "fable", "source": "written"}
+{"id": "ab928acefa", "prompt": "implement all these figma screen one by one and check each", "label": "fable", "source": "written"}
+{"id": "dd8037372f", "prompt": "run the migration on staging check the data fix issue then do live", "label": "fable", "source": "written"}
+{"id": "8691b677fe", "prompt": "clean the server find what filling the disk remove old job and setup auto cleanup", "label": "fable", "source": "written"}
+{"id": "e5b25369c8", "prompt": "build the full export feature schema api ui test and verify end to end", "label": "fable", "source": "written"}
+{"id": "ccca1f7cd0", "prompt": "check all 50 idea from the list and create ticket for each with estimate", "label": "fable", "source": "written"}
+{"id": "c2a854adef", "prompt": "refactor the whole data layer and run the test after each module", "label": "fable", "source": "written"}
+{"id": "fb95c3b0f3", "prompt": "add i18n to every screen and verify each language once", "label": "fable", "source": "written"}
+{"id": "3bf3db8281", "prompt": "fix the build then lint then type error then run the test", "label": "fable", "source": "written"}
+{"id": "8ea4b3dbec", "prompt": "split this into seperate service step by step and deploy each one", "label": "fable", "source": "written"}
+{"id": "687f0f3a85", "prompt": "write the script that run daily pull the report check and email summary then test it", "label": "fable", "source": "written"}
+{"id": "2f0469f92a", "prompt": "remove all deprecated api usage from whole codebase and test after each change", "label": "fable", "source": "written"}
+{"id": "4d6662f36d", "prompt": "do complete security pass on whole repo and verify each fix", "label": "fable", "source": "written"}
+{"id": "754a2a2814", "prompt": "generate crud for every table with test and make sure all pass", "label": "fable", "source": "written"}
+{"id": "ec4f9631c6", "prompt": "setup monitoring alert and dashboard for all service step by step", "label": "fable", "source": "written"}
+{"id": "eae6b91cde", "prompt": "port the old dashboard to the new design screen by screen", "label": "fable", "source": "written"}
+{"id": "72acd583e3", "prompt": "regenerate all the fixture and test data then run full suite", "label": "fable", "source": "written"}
+{"id": "dad2789e04", "prompt": "go through all the pending issue and close or respond each one", "label": "fable", "source": "written"}
+{"id": "d156085b12", "prompt": "audit every dependency for vulnerability and upgrade each one then test", "label": "fable", "source": "written"}
+{"id": "8840eb8939", "prompt": "make the pptx generation work properly test with real data and iterate until correct", "label": "fable", "source": "written"}
+{"id": "8f54d41f75", "prompt": "continue from previous session read the context and complete all remaining work", "label": "fable", "source": "written"}
+{"id": "68b64bc22c", "prompt": "benchmark 5 approach for this search write the result and pick fastest then implement", "label": "fable", "source": "written"}
+{"id": "c37c40eb5d", "prompt": "take this excel of task and create ticket for each one with proper detail", "label": "fable", "source": "written"}
+{"id": "8c6db9624b", "prompt": "keep iterating the layout until all visual test pass", "label": "fable", "source": "written"}
+{"id": "a7eb1828d4", "prompt": "do the full db migration mysql to postgres with data and all the query", "label": "fable", "source": "written"}
+{"id": "85b9e7b7e0", "prompt": "setup the project from zero repo lint test ci docker and deploy script", "label": "fable", "source": "written"}
+{"id": "e85487f509", "prompt": "check the whole app accessibility and fix each issue then verify with script", "label": "fable", "source": "written"}
+{"id": "cd4421759d", "prompt": "run the load test and tune the config until p99 under 200ms", "label": "fable", "source": "written"}
+{"id": "fdfeb5d1a3", "prompt": "deploy to staging test everything once then if all good push to live and verify", "label": "fable", "source": "written"}

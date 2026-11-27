@@ -13,8 +13,13 @@ import { createRequire } from "node:module";
 const require = createRequire(import.meta.url);
 const { featurize } = require("../out/src/core/features.js");
 const { classify: rules } = require("../out/src/core/classifier.js");
+const { TIERS, FAMILY_TO_TIER } = require("../out/src/core/types.js");
 
-const CLASSES = ["haiku", "sonnet", "opus", "fable"];
+// The data is labelled by family; the model speaks difficulty tiers, so labels
+// are mapped on the way in. TIERS order fixes the class indices.
+const CLASSES = [...TIERS];
+const toTier = (label) => FAMILY_TO_TIER[label] ?? label;
+const asTier = (r) => ({ ...r, label: toTier(r.label) });
 const HOLDOUT = 0.2;
 const MIN_COUNT = 2;
 const EPOCHS = 40;
@@ -22,9 +27,17 @@ const LR = 0.1;
 const L2 = 1e-4;
 const SEED = 42;
 
-const readJsonl = (p) => readFileSync(new URL(p, import.meta.url), "utf8").trim().split("\n").map((l) => JSON.parse(l));
-const real = readJsonl("./data/real.jsonl").filter((r) => r.label);
-const seed = readJsonl("./data/seed.jsonl");
+const readJsonl = (p) => readFileSync(new URL(p, import.meta.url), "utf8").trim().split("\n").filter((l) => l).map((l) => JSON.parse(l));
+
+// Use merged dataset if available (includes wildchat), else fall back to original sources.
+const hasMerged = (() => { try { readFileSync(new URL("./data/merged.jsonl", import.meta.url)); return true; } catch { return false; } })();
+const real = hasMerged
+  ? readJsonl("./data/merged.jsonl").filter((r) => r.label && r.source !== "written").map(asTier)
+  : readJsonl("./data/real.jsonl").filter((r) => r.label).map(asTier);
+const seed = hasMerged
+  ? readJsonl("./data/merged.jsonl").filter((r) => r.source === "written").map(asTier)
+  : readJsonl("./data/seed.jsonl").map(asTier);
+if (hasMerged) console.log("Using merged dataset (seed + real + wildchat)");
 
 // Deterministic shuffle so runs are comparable.
 let s = SEED;
@@ -82,7 +95,7 @@ function predict(prompt) {
   const idx = [...new Set(featurize(prompt))].map((f) => vocab[f]).filter((i) => i !== undefined);
   const p = forward(idx);
   const best = p.indexOf(Math.max(...p));
-  return { family: CLASSES[best], confidence: p[best] };
+  return { tier: CLASSES[best], confidence: p[best] };
 }
 
 function report(name, rows, fn) {
@@ -98,14 +111,14 @@ function report(name, rows, fn) {
 }
 
 console.log(`train ${train.length} (${seed.length} written + ${train.length - seed.length} real), test ${test.length} real, ${V} features\n`);
-report("keyword rules on held-out real prompts", test, (p) => rules({ prompt: p, contextBytes: Buffer.byteLength(p) }).family);
-const conf = report("trained model  on held-out real prompts", test, (p) => predict(p).family);
-report("trained model  on training set        ", train, (p) => predict(p).family);
+report("keyword rules on held-out real prompts", test, (p) => rules({ prompt: p, contextBytes: Buffer.byteLength(p) }).tier);
+const conf = report("trained model  on held-out real prompts", test, (p) => predict(p).tier);
+report("trained model  on training set        ", train, (p) => predict(p).tier);
 console.log("\nheld-out confusion (truth->predicted):", conf);
 console.log("\nheld-out detail:");
 for (const r of test) {
   const got = predict(r.prompt);
-  console.log(`  ${got.family === r.label ? "ok " : "BAD"} ${r.label.padEnd(6)} -> ${got.family.padEnd(6)} ${(got.confidence * 100).toFixed(0).padStart(3)}%  ${r.prompt.slice(0, 70).replace(/\n/g, " ")}`);
+  console.log(`  ${got.tier === r.label ? "ok " : "BAD"} ${r.label.padEnd(8)} -> ${got.tier.padEnd(8)} ${(got.confidence * 100).toFixed(0).padStart(3)}%  ${r.prompt.slice(0, 70).replace(/\n/g, " ")}`);
 }
 
 const model = {

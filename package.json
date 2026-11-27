@@ -317,10 +317,15 @@
   "scripts": {
     "compile": "tsc -p .",
     "watch": "tsc -w -p .",
-    "test": "tsc -p . && node --test out/test/*.test.js",
+    "test": "tsc -p . && node --test out/test/*.test.js && node web/build.mjs --check",
     "build:web": "tsc -p . && node web/build.mjs",
     "extract": "node ml/extract.mjs",
-    "train": "tsc -p . && node ml/extract.mjs && node ml/train.mjs"
+    "seed": "node ml/build-seed.mjs",
+    "train": "tsc -p . && node ml/extract.mjs && node ml/train.mjs",
+    "download:wildchat": "node ml/download-wildchat.mjs",
+    "autolabel": "node ml/autolabel.mjs",
+    "merge": "node ml/build-seed.mjs && node ml/merge-labels.mjs",
+    "data:pipeline": "node ml/download-wildchat.mjs && node ml/autolabel.mjs && node ml/build-seed.mjs && node ml/merge-labels.mjs"
   },
   "dependencies": {
     "@anthropic-ai/bedrock-sdk": "^1.1.0",

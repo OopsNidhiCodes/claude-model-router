@@ -1,4 +1,4 @@
-import { Family } from "./types";
+import { Tier } from "./types";
 
 /**
  * Turns a prompt into sparse text features for the trained classifier.
@@ -28,7 +28,8 @@ export function featurize(prompt: string): string[] {
 /** Weights for a multinomial logistic regression over `featurize` output. */
 export interface ClassifierModel {
   version: 1;
-  classes: Family[];
+  /** Difficulty tiers, in `TIERS` order; the index is the class index. */
+  classes: Tier[];
   /** feature -> row index into weights */
   vocab: Record<string, number>;
   /** weights[featureIndex][classIndex] */
@@ -37,8 +38,8 @@ export interface ClassifierModel {
 }
 
 export interface Prediction {
-  family: Family;
-  probs: Record<Family, number>;
+  tier: Tier;
+  probs: Record<Tier, number>;
   confidence: number;
 }
 
@@ -54,11 +55,11 @@ export function predict(model: ClassifierModel, prompt: string): Prediction {
   const max = Math.max(...logits);
   const exps = logits.map((l) => Math.exp(l - max));
   const sum = exps.reduce((a, b) => a + b, 0);
-  const probs = {} as Record<Family, number>;
+  const probs = {} as Record<Tier, number>;
   let best = 0;
   model.classes.forEach((c, i) => {
     probs[c] = exps[i] / sum;
     if (exps[i] > exps[best]) best = i;
   });
-  return { family: model.classes[best], probs, confidence: exps[best] / sum };
+  return { tier: model.classes[best], probs, confidence: exps[best] / sum };
 }

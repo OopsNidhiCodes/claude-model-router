@@ -3,7 +3,15 @@ import { isAbove } from "./escalation";
 import { ClassifierModel } from "./features";
 import { parsePrefix } from "./prefix";
 import { familyFromModelId, ModelRegistry } from "./registry";
-import { Classification, ClassifierInput, Family, ModelEntry, RouteDecision, RouterSettings } from "./types";
+import {
+  Classification,
+  ClassifierInput,
+  Family,
+  ModelEntry,
+  RouteDecision,
+  RouterSettings,
+  TIER_TO_FAMILY,
+} from "./types";
 import { generationOf } from "./version";
 
 export const LEGACY_MAPPED_WARNING = "Legacy Model ID mapped to production counterpart.";
@@ -57,17 +65,19 @@ export function route(registry: ModelRegistry, req: RouteRequest): RouteDecision
 
   const classifierInput: ClassifierInput = { prompt: req.prompt, contextBytes: req.contextBytes, inlineEdit: req.inlineEdit };
   const classification = classify(classifierInput, req.model);
+  // The classifier judges difficulty; this is the only place that becomes a model.
+  const classifiedFamily = TIER_TO_FAMILY[classification.tier];
 
   let family: Family;
   let source: RouteDecision["source"];
   if (settings.pinnedFamily !== "auto") {
     family = settings.pinnedFamily;
     source = "pin";
-    if (registry.family(classification.family).rank > registry.family(family).rank) {
+    if (registry.family(classifiedFamily).rank > registry.family(family).rank) {
       notices.push(`$(warning) Using pinned ${registry.family(family).displayName} for complex task`);
     }
   } else {
-    family = classification.family;
+    family = classifiedFamily;
     source = "classifier";
   }
 

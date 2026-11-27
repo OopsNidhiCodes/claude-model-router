@@ -1,112 +1,107 @@
-import { ClassifierModel, predict } from "./features";
-import { Classification, ClassifierInput, Family } from "./types";
+import { ClassifierModel } from "./features";
+import {
+  ContextSize,
+  extractSignals,
+  formatBytes,
+  LARGE_CONTEXT_BYTES,
+  Signals,
+  SMALL_CONTEXT_BYTES,
+} from "./signals";
+import { Classification, ClassifierInput, Tier } from "./types";
+
+export { LARGE_CONTEXT_BYTES, SMALL_CONTEXT_BYTES };
 
 /** Below this the trained model is treated as unsure and the keyword rules decide. */
 export const MODEL_MIN_CONFIDENCE = 0.5;
 
-const KB = 1024;
-export const SMALL_CONTEXT_BYTES = 5 * KB;
-export const LARGE_CONTEXT_BYTES = 100 * KB;
-const MAX_MATCHES_PER_RULE = 2;
+/** Weight a context size contributes, and to which tier. */
+const CONTEXT_WEIGHT: Record<ContextSize, { tier: Tier; weight: number; label: string }> = {
+  small: { tier: "trivial", weight: 2, label: "small context" },
+  medium: { tier: "standard", weight: 2, label: "standard context" },
+  large: { tier: "complex", weight: 2, label: "deep context" },
+};
 
-interface Rule {
-  family: Family;
-  weight: number;
-  pattern: RegExp;
-  reason: string;
-}
-
-// Deterministic keyword rules. Each matching rule adds its weight to its family.
-const RULES: Rule[] = [
-  {
-    family: "haiku",
-    weight: 3,
-    pattern: /\b(typos?|spelling|regex(es)?|regular expression|docstrings?|jsdoc|comments?|rename|format(ting)?|lint|syntax error|what does (this|that|it) (do|mean)|explain (this|the|that) (error|syntax|line))\b/i,
-    reason: "quick-fix / explanation intent",
-  },
-  {
-    family: "sonnet",
-    weight: 3,
-    pattern: /\b(implement|build|create|add|write|generate|scaffold|(unit |integration )?tests?|endpoint|route|controller|component|handler|function|class|fix (the |this )?bug|refactor (this|the) (function|method|class|component))\b/i,
-    reason: "implementation intent",
-  },
-  {
-    family: "opus",
-    weight: 4,
-    pattern: /\b(architect(ure|ural)?|design (the|a)|audit|root cause|memory leak|race condition|deadlock|security (review|audit)|vulnerabilit(y|ies)|performance bottleneck|deep(ly)?|across (the )?(codebase|files|modules|services)|multi-?file|structural|trade-?offs?|why (does|is|do))\b/i,
-    reason: "deep reasoning intent",
-  },
-  {
-    family: "fable",
-    weight: 4,
-    pattern: /\b(migrate (the|all|every|our)|iterate|until (the |all )?tests pass|keep (going|trying)|run (the )?(tests|build|commands?|scripts?)|in the terminal|step[- ]by[- ]step and (run|execute|apply)|automate|agent(ic)?|end[- ]to[- ]end|long[- ]running|multi[- ]step)\b/i,
-    reason: "agentic / multi-step intent",
-  },
-];
+const LONG_PROMPT_TIER: Tier = "standard";
+const LONG_PROMPT_WEIGHT = 1;
 
 // Ties resolve toward the more reliable middle tier first.
-const TIE_ORDER: Family[] = ["sonnet", "opus", "fable", "haiku"];
+const TIE_ORDER: Tier[] = ["standard", "complex", "expert", "trivial"];
 
 /**
- * Picks a family. With a trained model, its answer is used when it is confident;
- * otherwise (or without a model) the keyword rules below decide.
+ * Judges how hard a request is. With a trained model, its answer is used when it
+ * is confident; otherwise (or without a model) the keyword rules and the other
+ * signals decide. The result is a difficulty tier, never a model name — router.ts
+ * maps it to a family.
  */
 export function classify(input: ClassifierInput, model?: ClassifierModel): Classification {
-  if (model) {
-    const p = predict(model, input.prompt);
-    const pct = Math.round(p.confidence * 100);
-    const scores = { haiku: 0, sonnet: 0, opus: 0, fable: 0 } as Record<Family, number>;
-    for (const f of Object.keys(scores) as Family[]) scores[f] = Math.round((p.probs[f] ?? 0) * 100);
-    if (p.confidence >= MODEL_MIN_CONFIDENCE) return { family: p.family, scores, reasons: [`model ${pct}% ${p.family}`] };
-    const fallback = classifyByRules(input);
-    return { ...fallback, reasons: [`model unsure (${pct}% ${p.family}), keyword rules`, ...fallback.reasons] };
-  }
-  return classifyByRules(input);
+  return decide(extractSignals(input, model), input.contextBytes);
 }
 
-export function classifyByRules(input: ClassifierInput): Classification {
-  const scores: Record<Family, number> = { haiku: 0, sonnet: 0, opus: 0, fable: 0 };
+/**
+ * The one place signals become a tier. Keeping it separate from signal
+ * extraction means a routing policy can be changed and tested on its own.
+ */
+export function decide(signals: Signals, contextBytes: number): Classification {
+  if (signals.model && signals.model.confidence >= MODEL_MIN_CONFIDENCE) {
+    const pct = Math.round(signals.model.confidence * 100);
+    return {
+      tier: signals.model.tier,
+      scores: percentScores(signals.model.probs),
+      reasons: [`model ${pct}% ${signals.model.tier}`],
+    };
+  }
+
+  const fallback = decideByRules(signals, contextBytes);
+  if (!signals.model) return fallback;
+
+  const pct = Math.round(signals.model.confidence * 100);
+  return {
+    ...fallback,
+    reasons: [`model unsure (${pct}% ${signals.model.tier}), keyword rules`, ...fallback.reasons],
+  };
+}
+
+/** The deterministic path: keyword intent plus context size and prompt length. */
+export function decideByRules(signals: Signals, contextBytes: number): Classification {
+  const scores: Record<Tier, number> = { ...signals.intent.scores };
   const reasons: string[] = [];
 
-  if (input.contextBytes < SMALL_CONTEXT_BYTES) {
-    scores.haiku += 2;
-    reasons.push(`small context (${formatBytes(input.contextBytes)})`);
-  } else if (input.contextBytes <= LARGE_CONTEXT_BYTES) {
-    scores.sonnet += 2;
-    reasons.push(`standard context (${formatBytes(input.contextBytes)})`);
-  } else {
-    scores.opus += 2;
-    reasons.push(`deep context (${formatBytes(input.contextBytes)})`);
-  }
+  const ctx = CONTEXT_WEIGHT[signals.contextSize];
+  scores[ctx.tier] += ctx.weight;
+  reasons.push(`${ctx.label} (${formatBytes(contextBytes)})`);
 
-  // Each distinct match counts, capped so one long prompt can't run away with a tier.
-  for (const rule of RULES) {
-    const matches = new Set(Array.from(input.prompt.matchAll(new RegExp(rule.pattern, "gi")), (m) => m[0].toLowerCase()));
-    if (matches.size > 0) {
-      scores[rule.family] += rule.weight * Math.min(matches.size, MAX_MATCHES_PER_RULE);
-      reasons.push(rule.reason);
-    }
-  }
+  reasons.push(...signals.intent.reasons);
 
-  if (input.prompt.length > 1500) {
-    scores.sonnet += 1;
+  if (signals.isLongPrompt) {
+    scores[LONG_PROMPT_TIER] += LONG_PROMPT_WEIGHT;
     reasons.push("long prompt");
   }
 
-  // Opus and Fable share the top tier: pool their score, then split by the
-  // agentic-vs-reasoning signal, defaulting to Opus.
-  const topTier = scores.opus + scores.fable;
-  const topFamily: Family = scores.fable > scores.opus ? "fable" : "opus";
-  const contenders: [Family, number][] = [
-    ["haiku", scores.haiku],
-    ["sonnet", scores.sonnet],
-    [topFamily, topTier],
-  ];
-  contenders.sort((a, b) => b[1] - a[1] || TIE_ORDER.indexOf(a[0]) - TIE_ORDER.indexOf(b[0]));
-
-  return { family: contenders[0][0], scores, reasons };
+  return { tier: pickTier(scores), scores, reasons };
 }
 
-function formatBytes(bytes: number): string {
-  return bytes < KB ? `${bytes} B` : `${Math.round(bytes / KB)} KB`;
+/**
+ * Complex and expert share the top tier: pool their score, then split by the
+ * agentic-vs-reasoning signal, defaulting to complex.
+ */
+function pickTier(scores: Record<Tier, number>): Tier {
+  const topTier: Tier = scores.expert > scores.complex ? "expert" : "complex";
+  const contenders: [Tier, number][] = [
+    ["trivial", scores.trivial],
+    ["standard", scores.standard],
+    [topTier, scores.complex + scores.expert],
+  ];
+  contenders.sort((a, b) => b[1] - a[1] || TIE_ORDER.indexOf(a[0]) - TIE_ORDER.indexOf(b[0]));
+  return contenders[0][0];
+}
+
+function percentScores(probs: Record<Tier, number>): Record<Tier, number> {
+  const scores = { trivial: 0, standard: 0, complex: 0, expert: 0 } as Record<Tier, number>;
+  for (const t of Object.keys(scores) as Tier[]) scores[t] = Math.round((probs[t] ?? 0) * 100);
+  return scores;
+}
+
+/** Kept for callers and tests that work from a raw input rather than signals. */
+export function classifyByRules(input: ClassifierInput): Classification {
+  return decideByRules(extractSignals(input), input.contextBytes);
 }

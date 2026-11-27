@@ -1,4 +1,4 @@
-import { Family, RouteDecision } from "./types";
+import { Family, RouteDecision, Tier } from "./types";
 
 export type Surface = "chat" | "inlineEdit";
 export type EscalatedBy = "model" | "user";
@@ -17,8 +17,11 @@ export interface DecisionLogEntry {
   prompt?: string;
   promptChars: number;
   contextBytes: number;
-  scores?: Record<Family, number>;
+  /** Classifier score per difficulty tier. */
+  scores?: Record<Tier, number>;
   reasons?: string[];
+  /** Difficulty the classifier judged, before it was mapped to a family. */
+  tier?: Tier;
   /** The first decision for this turn, before any escalation. */
   decided: { family: Family; source: RouteDecision["source"]; model: string };
   /** What actually answered. */
@@ -51,6 +54,7 @@ export function buildEntry(o: TurnOutcome, includePrompt: boolean, now = new Dat
     contextBytes: o.contextBytes,
     scores: o.first.classification?.scores,
     reasons: o.first.classification?.reasons,
+    ...(o.first.classification ? { tier: o.first.classification.tier } : {}),
     decided: { family: o.first.family, source: o.first.source, model: o.first.providerModelId },
     served: { family: o.final.family, model: o.final.providerModelId },
     escalations: o.escalations,

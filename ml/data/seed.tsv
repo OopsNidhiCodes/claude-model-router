@@ -259,3 +259,199 @@ fable	rewrite the test data generator and regenerate the fixtures for every modu
 fable	remove all usages of the deprecated api across the codebase and run the tests after each change
 fable	plan and execute the move from heroku to aws, service by service
 fable	translate the entire documentation site into spanish and german
+
+# --- opus and fable examples in the project's own informal register ---
+# Add your own below, one per line: <label><TAB><prompt>
+opus	why the search is slow only on live not on staging .. check deeply once
+opus	the export getting timeout on 200k record .. what is the real reason behind this
+opus	give me 30 different idea for this crm app that we can add next quarter
+opus	one thing i want to know why the session taking too much credit .. analyse properly
+opus	check this one deeply why only some user getting login issue not all
+opus	we should use queue or cron for this export ?? tell me pros and cons both
+opus	review this whole flow once and tell me where it can break
+opus	the thing is same code working on staging but not on live .. find the actual root cause
+opus	analyse this pasted log and tell me what is the main issue here
+opus	why the memory keep increasing after we added the sync feature .. investigate
+opus	design the db structure for this multi tenant setup we need seperate data per company
+opus	give me 50 more idea for the roadmap with priority high medium low
+opus	what could be the reason the filter returning duplicate record in pagination
+opus	audit this api once for security .. whatever hole you find tell me
+opus	compare these two approach for search and suggest which is better for 200k+ record
+opus	why the build pass on local but fail on render .. check all possibility
+opus	this issue is intermittent only sometime happen .. how we can find root cause
+opus	plan the architecture for the new reporting module think about scale also
+opus	check once why the credit burning so fast in this session what is consuming
+opus	tell me all the risk if we deploy this to live tommorow
+opus	the sync failing for some record only .. analyse the pattern and tell me why
+opus	what is the best way to structure this project so other dev can work parallel
+opus	review this pr fully and point out anything that can cause issue in production
+opus	why same query fast for 10k but very slow for 200k .. explain properly
+opus	think and tell me should we rewrite this module or just refactor which is better
+opus	there is some race condition in this export .. find it
+opus	evaluate this third party api is it good for our case or we build our own
+opus	why in incognito it working but normal browser not .. root cause please
+opus	plan how we migrate the old data without any downtime .. step by step thinking
+opus	what are the hidden issue in this plan that we are not seeing
+opus	check the whole auth flow once and tell me if any security problem
+opus	why the playwright test failing randomly not every time .. investigate deeply
+opus	design the notification system that handle email sms and in app together
+opus	tell me what can go wrong with this auto delete after 24 hour mechanism
+opus	read this pasted doc and give me proper analysis with suggestion
+opus	why we getting 502 only for logged in user .. find the reason
+opus	give me 20 idea how we can reduce the cost of this ai feature
+opus	analyse the performance bottleneck in this page it take 40 second to load
+opus	what is the correct way to handle concurrent write here explain the issue
+opus	the data mismatch happened after failover .. walk me through what probably happened
+opus	decide between these three pricing model which one suit our product reason properly
+opus	why the job filter not catching all the relevant job .. analyse the logic
+opus	give me deep analysis of this feature and what we can improve
+opus	is this caching approach correct when multiple user write same time ?? think properly
+opus	what will break if we change this schema now .. check all the dependency
+opus	why is our api response time increasing gradually every week even though traffic is almost same .. investigate possible reasons
+opus	analyse this database schema and tell me if it will still work when we reach 10 million records
+opus	we are getting different results from the same ai prompt on different runs .. explain why and how to make it consistent
+opus	our background jobs are getting stuck randomly .. analyse the complete job lifecycle and identify weak points
+opus	should we use vector database or postgres pgvector for this use case .. compare properly with scale and cost
+opus	why are some users seeing old data even after we update the database .. investigate caching and consistency issues
+opus	review this entire payment flow and identify every possible failure scenario including partial payment and duplicate transactions
+opus	we want to support 10 different ai models in one product .. design the model selection and fallback architecture
+opus	analyse this code and tell me if there are any hidden dependencies that can make future changes difficult
+opus	why is our database connection pool getting exhausted during peak traffic even when queries are not that heavy
+opus	design a proper audit logging system where we can track who changed what and when without affecting performance
+opus	our ai agent sometimes performs the wrong action even when the instruction is clear .. investigate possible causes
+opus	compare redis queue rabbitmq and kafka for our workflow and recommend one based on reliability and scale
+opus	how should we handle tenant isolation if multiple companies are using the same application and database
+opus	analyse this onboarding funnel and identify where users are most likely dropping off and what experiments we should run
+opus	we are spending too much on cloud infrastructure .. break down the likely cost drivers and suggest an optimisation strategy
+opus	why is our image processing pipeline producing different output for similar images .. analyse the complete processing flow
+opus	design a reliable webhook system that handles retries duplicate events failed deliveries and event ordering
+opus	our application works fine with 100 concurrent users but starts failing at 1000 .. identify the likely bottlenecks
+opus	review this ai model evaluation strategy and tell me whether the benchmarks actually measure real world performance
+opus	how should we design a permission system where users can have different roles across different organisations
+opus	analyse this deployment architecture and identify single points of failure and disaster recovery gaps
+opus	why are our search results relevant for some queries but completely unrelated for others .. investigate ranking and retrieval
+opus	we need to support offline mode in our application .. analyse the data sync conflicts and propose an architecture
+opus	compare server side rendering static generation and client side rendering for our product based on actual requirements
+opus	our subscription system has edge cases around upgrades downgrades refunds and renewals .. design a robust billing state machine
+opus	analyse this machine learning dataset and identify leakage imbalance bias and possible problems with the labels
+opus	how can we measure whether our ai responses are actually improving after every model update
+opus	we have multiple services writing to the same business entity .. what consistency problems can happen and how should we solve them
+opus	why does our application become unstable after running for several hours but works normally after restarting
+opus	design an architecture for processing millions of uploaded documents with extraction indexing and search
+opus	we want to introduce ai memory in our product .. analyse what should be stored retrieved updated and forgotten
+opus	review this feature requirement and identify missing edge cases before the engineering team starts development
+opus	our recommendation engine is showing repetitive results .. investigate diversity ranking and user preference handling
+opus	how should we handle schema changes when old and new application versions are running simultaneously
+opus	analyse the security risks of allowing users to upload and execute custom scripts in our platform
+opus	we need a reliable system for processing large excel files without memory issues or request timeouts .. design the approach
+opus	why are our automated tests passing individually but failing when the complete suite runs
+opus	compare building our own authentication system with using an external identity provider .. evaluate long term tradeoffs
+opus	design a multi step ai agent workflow where each agent has a specific responsibility and failures can be recovered
+opus	analyse whether our current architecture can support real time notifications for one million users
+opus	we have a lot of duplicate records coming from multiple integrations .. design a proper entity resolution strategy
+opus	why is the model performing well on our test dataset but poorly with actual customer inputs
+opus	help me decide whether we should use a rules engine an llm or a hybrid approach for this business workflow
+opus	review our data retention strategy and identify privacy compliance and storage cost risks
+opus	our application needs to process tasks in priority order but high priority tasks are blocking everything else .. analyse the scheduling design
+opus	design a rollback strategy for a database migration that changes millions of existing records
+opus	analyse this product roadmap and identify dependencies that could delay the entire release
+opus	we want to introduce usage based pricing .. analyse the metering architecture billing risks and possible customer disputes
+opus	why is our frontend rendering components repeatedly even when the underlying data has not changed
+opus	design a system that can detect anomalous user activity without generating too many false positives
+fable	inspect the complete repository identify all broken api endpoints fix them and verify each endpoint with actual requests
+fable	set up a complete local development environment install everything configure environment variables start the app and verify all major features
+fable	take this existing application and add a complete role based access system including database changes backend middleware frontend permissions and tests
+fable	find all database queries that are running without proper indexes add the required indexes and benchmark the performance before and after
+fable	download these sample documents process them through our extraction pipeline identify incorrect outputs fix the extraction logic and run everything again
+fable	go through the entire frontend and replace all hardcoded api urls with a centralised configuration then test development staging and production builds
+fable	implement a complete forgot password flow including token generation email integration expiry validation password reset and automated tests
+fable	find every place where errors are being silently ignored add proper error handling logging and test the affected workflows
+fable	create a complete seed script with realistic data for every database table then run it locally and verify all relationships
+fable	analyse the complete application and add missing loading empty error and success states to every major screen
+fable	build an automated backup and restore system for the database configure scheduled backups and verify that restoration actually works
+fable	implement a complete notification preference system where users can enable or disable email push and in app notifications separately
+fable	go through the complete application on mobile tablet and desktop fix all layout issues and verify every major page at each screen size
+fable	create a full staging environment using docker compose configure all services and verify that the application works from a fresh setup
+fable	find all unnecessary database calls on the dashboard reduce the number of requests and verify that the page loads faster
+fable	implement an activity history page showing user actions with filters pagination and proper access control then test it end to end
+fable	take the existing authentication system and add refresh token rotation token expiry logout from all devices and tests
+fable	run a complete end to end test of the checkout process including success failure cancellation duplicate requests and payment retries then fix every issue
+fable	go through the entire codebase and identify unused components functions dependencies and dead files remove them safely and run the full test suite
+fable	implement bulk import for csv and excel files including column mapping validation duplicate detection error reports and large file handling
+fable	set up a complete redis caching layer for the expensive api endpoints measure response times before and after and verify cache invalidation
+fable	create an admin dashboard with user management role management activity logs and system statistics connected to real backend data
+fable	implement a background job system for large exports with progress tracking retry support cancellation and downloadable results
+fable	go through all environment variables used in the project document them create an example env file and verify the application starts correctly
+fable	implement a complete file management module with upload preview download delete permissions and storage cleanup
+fable	find all places where the frontend and backend data structures are inconsistent fix the contracts and verify every affected feature
+fable	configure playwright to test all important user journeys run the tests in ci and fix every failure
+fable	implement proper pagination sorting and filtering across all admin tables and verify that the results remain correct with 200k records
+fable	migrate the existing application to a new database schema preserve all existing records validate the migrated data and document the rollback procedure
+fable	build a complete audit trail for all critical database updates including old values new values user identity and timestamps then test it
+fable	go through the existing api documentation compare every endpoint with the actual implementation correct outdated examples and verify the examples
+fable	implement an ai powered document analysis feature including file upload extraction model calls result storage and frontend display then test the full workflow
+fable	set up automated dependency update checks with vulnerability scanning and ci validation then resolve all critical findings
+fable	identify all slow frontend routes measure bundle sizes split unnecessary bundles and verify the improvement after optimisation
+fable	implement a proper retry and dead letter queue mechanism for failed background jobs test repeated failures and recovery
+fable	create a complete integration with this third party api including authentication rate limits retries webhooks error handling and tests
+fable	convert all existing database operations to transactions wherever required identify partial update risks and verify the fixes
+fable	implement global search across users projects documents and activities with filters ranking pagination and performance testing
+fable	go through all forms in the application add frontend and backend validation consistent error messages and test invalid inputs
+fable	prepare this application for production by checking security headers cors secrets database settings logging error reporting and deployment configuration
+fable	implement a complete multi tenant onboarding workflow including organisation creation invitations member roles and tenant level data isolation then test it
+fable	create a script that generates realistic production scale test data run it against the local database and benchmark the important queries
+fable	replace the existing file storage implementation with s3 compatible storage migrate existing files verify file access and preserve existing references
+fable	implement real time updates for the dashboard using websockets including reconnect handling authentication and fallback behaviour
+fable	identify all features that are missing automated tests create test cases for normal edge and failure scenarios and run the complete suite
+fable	build a complete subscription lifecycle including free trial plan upgrades downgrades cancellation renewal failed payments and invoice history
+fable	implement a centralised logging and error monitoring setup across frontend backend and background workers then verify error tracking
+fable	go through the existing codebase and improve the separation between business logic database access and api controllers without changing existing behaviour
+fable	create a complete deployment pipeline with separate staging and production environments automated checks deployment approval and rollback
+fable	implement an automated data reconciliation script that compares records between two databases reports mismatches and safely repairs eligible records
+fable	test the application with 500 concurrent users identify bottlenecks optimise the system and repeat the load test until the target is achieved
+fable	take this feature requirement and implement everything from database design to backend api frontend ui tests documentation and final verification
+fable	check this one locally fully means 200k+ record once and fix whatever break
+fable	continue the leadcrm work from the handoff .. read it and finish the remaining task
+fable	run the test once locally and fix all failure then run again
+fable	migrate all the old export code to new structure and test each one
+fable	fistly start the app locally and give me cred as well then test the login
+fable	upgrade all the package to latest and fix the breaking change run build after each
+fable	check the export with playwright fully and fix what you find then test again
+fable	add 200k record in local db and test the search performance end to end
+fable	make sure into this one handoff all the stuff included then i will share
+fable	go through all the page and fix the responsive issue one by one
+fable	setup the ci for this repo and keep fixing until the pipeline green
+fable	convert this whole module to typescript file by file and run tsc after each
+fable	do the full testing on staging fix the bug then deploy to live
+fable	automate the release bump version build tag and write changelog then test it
+fable	create branch fix these 3 bug run full test and open pr
+fable	go through every api and add proper validation then test all endpoint
+fable	keep tuning the query until the 200k search come under 2 second
+fable	implement all these figma screen one by one and check each
+fable	run the migration on staging check the data fix issue then do live
+fable	clean the server find what filling the disk remove old job and setup auto cleanup
+fable	build the full export feature schema api ui test and verify end to end
+fable	check all 50 idea from the list and create ticket for each with estimate
+fable	refactor the whole data layer and run the test after each module
+fable	add i18n to every screen and verify each language once
+fable	fix the build then lint then type error then run the test
+fable	split this into seperate service step by step and deploy each one
+fable	write the script that run daily pull the report check and email summary then test it
+fable	remove all deprecated api usage from whole codebase and test after each change
+fable	do complete security pass on whole repo and verify each fix
+fable	generate crud for every table with test and make sure all pass
+fable	setup monitoring alert and dashboard for all service step by step
+fable	port the old dashboard to the new design screen by screen
+fable	regenerate all the fixture and test data then run full suite
+fable	go through all the pending issue and close or respond each one
+fable	audit every dependency for vulnerability and upgrade each one then test
+fable	make the pptx generation work properly test with real data and iterate until correct
+fable	continue from previous session read the context and complete all remaining work
+fable	benchmark 5 approach for this search write the result and pick fastest then implement
+fable	take this excel of task and create ticket for each one with proper detail
+fable	keep iterating the layout until all visual test pass
+fable	do the full db migration mysql to postgres with data and all the query
+fable	setup the project from zero repo lint test ci docker and deploy script
+fable	check the whole app accessibility and fix each issue then verify with script
+fable	run the load test and tune the config until p99 under 200ms
+fable	deploy to staging test everything once then if all good push to live and verify

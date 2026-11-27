@@ -1,6 +1,31 @@
 export type Family = "haiku" | "sonnet" | "opus" | "fable";
 export const FAMILIES: readonly Family[] = ["haiku", "sonnet", "opus", "fable"];
 
+/**
+ * How hard a request is, independent of which models exist. The classifier
+ * answers in these terms; `TIER_TO_FAMILY` is the only place that turns an
+ * answer into a model family, so a change to the roster does not reach the
+ * classifier or its training data.
+ */
+export type Tier = "trivial" | "standard" | "complex" | "expert";
+
+/** Ordered easiest to hardest; the index is the class index the trained model uses. */
+export const TIERS: readonly Tier[] = ["trivial", "standard", "complex", "expert"];
+
+export const TIER_TO_FAMILY: Record<Tier, Family> = {
+  trivial: "haiku",
+  standard: "sonnet",
+  complex: "opus",
+  expert: "fable",
+};
+
+export const FAMILY_TO_TIER: Record<Family, Tier> = {
+  haiku: "trivial",
+  sonnet: "standard",
+  opus: "complex",
+  fable: "expert",
+};
+
 export type ProviderName = "anthropic" | "bedrock" | "vertex";
 export type ReleaseChannel = "stable" | "experimental";
 export type ModelStatus = "current" | "previous" | "deprecated";
@@ -74,8 +99,8 @@ export interface ClassifierInput {
 }
 
 export interface Classification {
-  family: Family;
-  scores: Record<Family, number>;
+  tier: Tier;
+  scores: Record<Tier, number>;
   reasons: string[];
 }
 
