@@ -20,9 +20,14 @@ applies wins.
 3. **Workspace rules.** If the workspace declares modern toolchains
    (`package.json`, `tsconfig.json`, `pyproject.toml`, `go.mod`), pinned
    legacy-generation versions are upgraded within the same family.
-4. **Local classifier.** A small trained model picks a family when it is at
-   least 50% sure; otherwise keyword rules plus context size decide.
-   `src/core/classifier.ts` has the rules, `ml/README.md` the training.
+4. **Local classifier.** A small trained model judges a difficulty tier
+   (trivial/standard/complex/expert), which maps to a family. It walks tiers
+   cheapest first and takes the first whose own probability clears that tier's
+   confidence bar — a lower bar for the cheap tiers, a higher one for the
+   expensive ones, since routing too low gets caught by escalation but routing
+   too high pays silently. If none clear, keyword rules plus context size
+   decide. `src/core/classifier.ts` has the thresholds and rules,
+   `src/core/signals.ts` the signals, `ml/README.md` the training.
 
 Each family is then resolved to a concrete model through the per-family
 channel setting: latest, pinned snapshot, or a custom model ID. The registry

@@ -7,12 +7,31 @@ import {
   Signals,
   SMALL_CONTEXT_BYTES,
 } from "./signals";
-import { Classification, ClassifierInput, Tier } from "./types";
+import { Classification, ClassifierInput, Tier, TIERS } from "./types";
 
 export { LARGE_CONTEXT_BYTES, SMALL_CONTEXT_BYTES };
 
-/** Below this the trained model is treated as unsure and the keyword rules decide. */
-export const MODEL_MIN_CONFIDENCE = 0.5;
+/**
+ * Per-tier confidence bar the model's own probability for that tier must clear.
+ * Tiers are walked cheapest first (`TIERS` order), so the first one that clears
+ * wins — "among tiers good enough, pick the cheapest" rather than "is the single
+ * most likely tier confident enough".
+ *
+ * The bars are uneven on purpose: routing too low costs one wasted call, since
+ * escalation catches it; routing too high silently pays the higher tier's price
+ * on every turn with nothing to catch it. So trivial asks for less certainty and
+ * complex/expert ask for more. Measured by leave-one-session-out CV across 6 fold
+ * splits (classifier-accuracy-findings memory): this vector held accuracy
+ * roughly flat (within the ~2-point noise floor of a 95-prompt test set) while
+ * cutting over-routed cost by about a quarter versus a flat 50% bar on every
+ * tier — a structural win independent of that noise.
+ */
+export const TIER_THRESHOLD: Record<Tier, number> = {
+  trivial: 0.3,
+  standard: 0.45,
+  complex: 0.55,
+  expert: 0.55,
+};
 
 /** Weight a context size contributes, and to which tier. */
 const CONTEXT_WEIGHT: Record<ContextSize, { tier: Tier; weight: number; label: string }> = {
@@ -28,10 +47,10 @@ const LONG_PROMPT_WEIGHT = 1;
 const TIE_ORDER: Tier[] = ["standard", "complex", "expert", "trivial"];
 
 /**
- * Judges how hard a request is. With a trained model, its answer is used when it
- * is confident; otherwise (or without a model) the keyword rules and the other
- * signals decide. The result is a difficulty tier, never a model name — router.ts
- * maps it to a family.
+ * Judges how hard a request is. With a trained model, the cheapest tier whose
+ * own probability clears its threshold wins; otherwise (or when none clear) the
+ * keyword rules and the other signals decide. The result is a difficulty tier,
+ * never a model name — router.ts maps it to a family.
  */
 export function classify(input: ClassifierInput, model?: ClassifierModel): Classification {
   return decide(extractSignals(input, model), input.contextBytes);
@@ -42,13 +61,13 @@ export function classify(input: ClassifierInput, model?: ClassifierModel): Class
  * extraction means a routing policy can be changed and tested on its own.
  */
 export function decide(signals: Signals, contextBytes: number): Classification {
-  if (signals.model && signals.model.confidence >= MODEL_MIN_CONFIDENCE) {
-    const pct = Math.round(signals.model.confidence * 100);
-    return {
-      tier: signals.model.tier,
-      scores: percentScores(signals.model.probs),
-      reasons: [`model ${pct}% ${signals.model.tier}`],
-    };
+  if (signals.model) {
+    for (const tier of TIERS) {
+      const p = signals.model.probs[tier] ?? 0;
+      if (p >= TIER_THRESHOLD[tier]) {
+        return { tier, scores: percentScores(signals.model.probs), reasons: [`model ${Math.round(p * 100)}% ${tier}`] };
+      }
+    }
   }
 
   const fallback = decideByRules(signals, contextBytes);

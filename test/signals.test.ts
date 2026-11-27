@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { decide, decideByRules, MODEL_MIN_CONFIDENCE } from "../src/core/classifier";
+import { decide, decideByRules, TIER_THRESHOLD } from "../src/core/classifier";
 import {
   contextSizeOf,
   extractSignals,
@@ -150,18 +150,46 @@ describe("decision table", () => {
     assert.match(result.reasons[0], /^model 90% complex$/);
   });
 
-  it("falls back to the rules when the model is unsure, and says so", () => {
+  it("falls back to the rules when no tier clears its threshold, and says so", () => {
     const signals = emptySignals({
       model: {
         tier: "complex",
-        confidence: MODEL_MIN_CONFIDENCE - 0.01,
+        confidence: 0.49,
         probs: { trivial: 0.26, standard: 0.25, complex: 0.49, expert: 0 },
       },
       intent: { scores: { trivial: 9, standard: 0, complex: 0, expert: 0 }, reasons: ["quick-fix / explanation intent"] },
     });
+    // None of these clear TIER_THRESHOLD (0.3 / 0.45 / 0.55 / 0.55).
     const result = decide(signals, 1 * KB);
     assert.equal(result.tier, "trivial");
     assert.match(result.reasons[0], /model unsure/);
     assert.ok(result.reasons.includes("quick-fix / explanation intent"));
+  });
+
+  it("picks the cheapest tier that clears its own bar, not just the top pick", () => {
+    // complex is the model's top pick (45%), but trivial clears ITS lower bar too,
+    // and trivial is cheaper, so threshold-then-cheapest should win here.
+    const signals = emptySignals({
+      model: { tier: "complex", confidence: 0.45, probs: { trivial: 0.35, standard: 0.2, complex: 0.45, expert: 0 } },
+    });
+    assert.ok(0.35 >= TIER_THRESHOLD.trivial, "test fixture assumes trivial clears its bar");
+    assert.ok(0.45 < TIER_THRESHOLD.complex, "test fixture assumes complex does NOT clear its bar");
+    const result = decide(signals, 1 * KB);
+    assert.equal(result.tier, "trivial");
+  });
+
+  it("will still pick an expensive tier when nothing cheaper clears", () => {
+    const signals = emptySignals({
+      model: { tier: "expert", confidence: 0.6, probs: { trivial: 0.1, standard: 0.1, complex: 0.2, expert: 0.6 } },
+    });
+    const result = decide(signals, 1 * KB);
+    assert.equal(result.tier, "expert");
+  });
+
+  it("sets a lower bar for cheap tiers than expensive ones", () => {
+    // The asymmetry is the point: under-routing is caught by escalation, over-routing is not.
+    assert.ok(TIER_THRESHOLD.trivial < TIER_THRESHOLD.standard);
+    assert.ok(TIER_THRESHOLD.standard < TIER_THRESHOLD.complex);
+    assert.equal(TIER_THRESHOLD.complex, TIER_THRESHOLD.expert);
   });
 });
