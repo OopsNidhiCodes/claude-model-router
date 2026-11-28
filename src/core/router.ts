@@ -1,3 +1,4 @@
+import { budgetFloor, thresholdsFor } from "./budget";
 import { classify } from "./classifier";
 import { isAbove } from "./escalation";
 import { ClassifierModel } from "./features";
@@ -46,8 +47,9 @@ interface Resolved {
  *   1. prompt prefix   (bypasses every other rule)
  *   2. settings pin    (pinned family and per-family version choice)
  *   3. workspace rules (strict-modern upgrades legacy generations, family preserved)
- *   4. local classifier
- * An escalation floor (minFamily) raises the result of steps 2-4.
+ *   4. local classifier (its thresholds shift with the budget mode)
+ * An escalation floor (minFamily), then a budget-mode floor ("deep" only),
+ * each only ever raise the result of steps 2-4; a /prefix bypasses both.
  */
 export function route(registry: ModelRegistry, req: RouteRequest): RouteDecision {
   const { settings } = req;
@@ -64,7 +66,7 @@ export function route(registry: ModelRegistry, req: RouteRequest): RouteDecision
   }
 
   const classifierInput: ClassifierInput = { prompt: req.prompt, contextBytes: req.contextBytes, inlineEdit: req.inlineEdit };
-  const classification = classify(classifierInput, req.model);
+  const classification = classify(classifierInput, req.model, thresholdsFor(settings.budgetMode));
   // The classifier judges difficulty; this is the only place that becomes a model.
   const classifiedFamily = TIER_TO_FAMILY[classification.tier];
 
@@ -85,6 +87,13 @@ export function route(registry: ModelRegistry, req: RouteRequest): RouteDecision
     notices.push(`$(arrow-up) Escalated from ${registry.family(family).displayName} to ${registry.family(req.minFamily).displayName}`);
     family = req.minFamily;
     source = "escalation";
+  }
+
+  const floor = budgetFloor(settings.budgetMode);
+  if (floor && isAbove(floor, family)) {
+    notices.push(`$(database) Budget mode "${settings.budgetMode}": using ${registry.family(floor).displayName} or higher`);
+    family = floor;
+    source = "budget";
   }
 
   const resolved = resolveFamily(registry, family, settings, req.strictModern, warnings, notices);

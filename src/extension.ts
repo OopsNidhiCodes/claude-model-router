@@ -1,7 +1,9 @@
 import * as vscode from "vscode";
-import { FAMILIES } from "./core/types";
+import { BUDGET_MODE_LABEL } from "./core/budget";
+import { BUDGET_MODES, FAMILIES } from "./core/types";
 import { ChatPanel } from "./vscode/chatPanel";
 import { API_KEY_SECRET, readSettings, SECTION } from "./vscode/config";
+import { DecisionLogPanel } from "./vscode/decisionLogPanel";
 import { editSelection } from "./vscode/inlineEdit";
 import { RouterService } from "./vscode/routerService";
 
@@ -25,6 +27,17 @@ export function activate(context: vscode.ExtensionContext) {
     if (pick) await vscode.workspace.getConfiguration(SECTION).update("pinnedFamily", pick.value, vscode.ConfigurationTarget.Global);
   });
 
+  command("claudeRouter.setBudgetMode", async () => {
+    const current = readSettings().budgetMode;
+    const items = BUDGET_MODES.map((mode) => ({
+      label: BUDGET_MODE_LABEL[mode],
+      description: mode === current ? "current" : undefined,
+      value: mode,
+    }));
+    const pick = await vscode.window.showQuickPick(items, { title: "Claude Router: budget mode" });
+    if (pick) await vscode.workspace.getConfiguration(SECTION).update("budgetMode", pick.value, vscode.ConfigurationTarget.Global);
+  });
+
   command("claudeRouter.setApiKey", async () => {
     const key = await vscode.window.showInputBox({ title: "Anthropic API key", password: true, ignoreFocusOut: true, placeHolder: "sk-ant-..." });
     if (!key?.trim()) return;
@@ -38,6 +51,7 @@ export function activate(context: vscode.ExtensionContext) {
   });
 
   command("claudeRouter.openDecisionLog", () => service.log.open());
+  command("claudeRouter.openDecisionLogViewer", () => DecisionLogPanel.show(service.log));
   command("claudeRouter.clearDecisionLog", () => service.log.clear());
 
   command("claudeRouter.rescanWorkspace", async () => {

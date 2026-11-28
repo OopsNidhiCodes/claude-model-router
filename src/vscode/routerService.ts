@@ -1,8 +1,16 @@
 import * as vscode from "vscode";
 import { ModelRegistry } from "../core/registry";
 import { route, RoutingError } from "../core/router";
-import { Family, RouteDecision } from "../core/types";
-import { createProvider, fallbackServedBy, Message, MessageParam } from "../providers/provider";
+import { Family, ProviderName, RouteDecision } from "../core/types";
+import {
+  createProvider,
+  FallbackCandidate,
+  fallbackServedBy,
+  Message,
+  MessageParam,
+  ProviderOptions,
+  streamWithFallback,
+} from "../providers/provider";
 import { ClassifierModel } from "../core/features";
 import { loadClassifierModel, loadRegistry, maxTokens, readProviderOptions, readSettings } from "./config";
 import { DecisionLog } from "./decisionLog";
@@ -23,6 +31,13 @@ export interface SendOptions {
   signal?: AbortSignal;
   onText: (delta: string) => void;
 }
+
+/**
+ * Tried in this order after the settings-chosen provider, for a 429/5xx that
+ * survives the SDK's own retries. Only providers the registry has an id for
+ * the model on are actually attempted.
+ */
+const PROVIDER_FALLBACK_ORDER: ProviderName[] = ["anthropic", "bedrock", "vertex"];
 
 /** Ties the routing chain, the UI feedback layer and the network provider together. */
 export class RouterService implements vscode.Disposable {
@@ -68,13 +83,21 @@ export class RouterService implements vscode.Disposable {
     }
   }
 
-  /** Streams one request to the configured provider and reports fallbacks in the status bar. */
+  /**
+   * Streams one request. On a 429/5xx that outlasts the provider SDK's own
+   * retries, falls back to the same model on another provider before giving
+   * up; see `providerFallbackCandidates` and `streamWithFallback`. Reports
+   * either kind of fallback (cross-provider, or the Claude API's own
+   * server-side model fallback) in the status bar.
+   */
   async send(decision: RouteDecision, opts: SendOptions): Promise<Message> {
     const settings = readSettings();
-    const provider = createProvider(settings.provider, await readProviderOptions(this.context.secrets));
-    const message = await provider.stream(
+    const providerOptions = await readProviderOptions(this.context.secrets);
+    const candidates = this.providerFallbackCandidates(decision, settings.provider, providerOptions);
+
+    const { message, servedByProvider } = await streamWithFallback(
+      candidates,
       {
-        model: decision.providerModelId,
         system: opts.system,
         messages: opts.messages,
         maxTokens: maxTokens(),
@@ -83,9 +106,33 @@ export class RouterService implements vscode.Disposable {
       },
       opts.onText,
     );
+
+    if (servedByProvider) {
+      this.statusBar.flashProviderFallback(decision.label, settings.provider, servedByProvider);
+    }
     const servedBy = fallbackServedBy(message, decision.providerModelId);
     if (servedBy) this.statusBar.flashFallback(decision.label, this.registry.find(servedBy)?.displayName ?? servedBy);
     return message;
+  }
+
+  /**
+   * The primary provider first, then whichever others the registry has an id
+   * for this model on, in `PROVIDER_FALLBACK_ORDER`. A custom/passthrough
+   * model (no registry entry) has no known equivalent elsewhere, so it is the
+   * only candidate.
+   */
+  private providerFallbackCandidates(decision: RouteDecision, primary: ProviderName, providerOptions: ProviderOptions): FallbackCandidate[] {
+    const candidates: FallbackCandidate[] = [
+      { provider: primary, client: createProvider(primary, providerOptions), model: decision.providerModelId },
+    ];
+    if (!decision.model) return candidates;
+
+    for (const provider of PROVIDER_FALLBACK_ORDER) {
+      if (provider === primary) continue;
+      const model = this.registry.providerId(decision.model, provider);
+      if (model) candidates.push({ provider, client: createProvider(provider, providerOptions), model });
+    }
+    return candidates;
   }
 
   dispose() {

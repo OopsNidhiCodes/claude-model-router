@@ -1,10 +1,11 @@
 import { randomBytes } from "node:crypto";
 import * as vscode from "vscode";
 import { Escalation } from "../core/decisionLog";
+import { DispatchCapState, INITIAL_DISPATCH_CAP_STATE, trackDispatch } from "../core/dispatchCap";
 import { isEscalationRequest, nextFamily, systemPromptFor } from "../core/escalation";
 import { Family, RouteDecision } from "../core/types";
 import { assistantTurn, describeError, MessageParam, messageText } from "../providers/provider";
-import { maxAutoEscalations } from "./config";
+import { dispatchCapMaxConsecutiveTurns, maxAutoEscalations } from "./config";
 import { gatherEditorContext } from "./contextAggregator";
 import { RouterService } from "./routerService";
 
@@ -44,6 +45,8 @@ export class ChatPanel implements vscode.Disposable {
   private minFamily: Family | undefined;
   /** The last completed exchange, so the Escalate button can redo it. */
   private last: Turn | undefined;
+  /** Consecutive same-family replies, for the dispatch cap (see core/dispatchCap.ts). */
+  private dispatchCap: DispatchCapState = INITIAL_DISPATCH_CAP_STATE;
   private readonly disposables: vscode.Disposable[] = [];
 
   private constructor(private readonly service: RouterService) {
@@ -66,6 +69,7 @@ export class ChatPanel implements vscode.Disposable {
       this.history = [];
       this.minFamily = undefined;
       this.last = undefined;
+      this.dispatchCap = INITIAL_DISPATCH_CAP_STATE;
       return;
     }
     if (this.pending) return;
@@ -135,7 +139,16 @@ export class ChatPanel implements vscode.Disposable {
       this.last = turn;
       const servedBy = message.model !== turn.decision.providerModelId ? message.model : undefined;
       const note = message.stop_reason === "max_tokens" ? "Response truncated at max_tokens." : undefined;
-      this.post({ type: "end", note, servedBy, canEscalate: to !== undefined });
+
+      const dispatch = trackDispatch(this.dispatchCap, turn.decision.family, dispatchCapMaxConsecutiveTurns());
+      this.dispatchCap = dispatch.state;
+      let floorNotice: string | undefined;
+      if (dispatch.raiseTo) {
+        this.minFamily = dispatch.raiseTo;
+        floorNotice = `${turn.decision.label} has answered ${dispatchCapMaxConsecutiveTurns()} times in a row without escalating — switching to ${displayName(dispatch.raiseTo)}.`;
+      }
+
+      this.post({ type: "end", note, floorNotice, servedBy, canEscalate: to !== undefined });
       void this.log(turn, { stopReason: message.stop_reason ?? undefined, servedBy });
     } catch (err) {
       this.post({ type: "error", text: describeError(err) });
@@ -163,6 +176,10 @@ export class ChatPanel implements vscode.Disposable {
     this.disposables.forEach((d) => d.dispose());
     this.panel.dispose();
   }
+}
+
+function displayName(family: Family): string {
+  return family[0].toUpperCase() + family.slice(1);
 }
 
 function html(nonce: string, cspSource: string): string {
@@ -282,6 +299,7 @@ function html(nonce: string, cspSource: string): string {
         if (current) {
           if (data.servedBy) note(current.el, "Answered by " + data.servedBy + " (fallback).");
           if (data.note) note(current.el, data.note);
+          if (data.floorNotice) note(current.el, data.floorNotice);
         }
         current = null;
         busy(false);

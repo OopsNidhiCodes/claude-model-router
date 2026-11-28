@@ -35,6 +35,11 @@
         "category": "Claude Router"
       },
       {
+        "command": "claudeRouter.setBudgetMode",
+        "title": "Set Budget Mode",
+        "category": "Claude Router"
+      },
+      {
         "command": "claudeRouter.setApiKey",
         "title": "Set Anthropic API Key",
         "category": "Claude Router"
@@ -52,6 +57,11 @@
       {
         "command": "claudeRouter.openDecisionLog",
         "title": "Open Decision Log",
+        "category": "Claude Router"
+      },
+      {
+        "command": "claudeRouter.openDecisionLogViewer",
+        "title": "Open Decision Log Viewer",
         "category": "Claude Router"
       },
       {
@@ -105,6 +115,23 @@
           ],
           "default": "auto",
           "description": "Pin every request to one model family. A pin always wins over the classifier; a /prefix in the prompt still overrides it."
+        },
+        "claudeRouter.budgetMode": {
+          "type": "string",
+          "enum": [
+            "normal",
+            "budget",
+            "quality",
+            "deep"
+          ],
+          "enumDescriptions": [
+            "Auto routing with the classifier's measured thresholds",
+            "Bias toward Haiku and Sonnet; Opus or Fable only when clearly warranted",
+            "Bias toward Opus; use Haiku only for the clearest trivial requests",
+            "Never route below Opus; the agentic signal still decides Opus vs Fable"
+          ],
+          "default": "normal",
+          "description": "Quick cost/quality preset, set via \"Claude Router: Set Budget Mode\" or the status bar. A pin or /prefix still chooses the family; \"deep\" still applies as a floor on top of either, the same way an escalation floor does."
         },
         "claudeRouter.releaseChannel": {
           "type": "string",
@@ -310,6 +337,13 @@
           "minimum": 0,
           "maximum": 3,
           "description": "How many times one request may be escalated automatically when the model replies ESCALATE. 0 disables model-initiated escalation; the Escalate button always works."
+        },
+        "claudeRouter.dispatchCap.maxConsecutiveTurns": {
+          "type": "number",
+          "default": 3,
+          "minimum": 0,
+          "maximum": 10,
+          "description": "If one chat gets this many replies in a row from the same model family without ever escalating, the floor is raised to the next tier for the following turn — the model never explicitly said ESCALATE, but it also never resolved the task. 0 disables this."
         }
       }
     }

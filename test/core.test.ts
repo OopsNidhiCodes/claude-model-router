@@ -3,7 +3,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, it } from "node:test";
 import { classify } from "../src/core/classifier";
-import { buildEntry } from "../src/core/decisionLog";
+import { buildEntry, parseDecisionLog } from "../src/core/decisionLog";
 import { ESCALATE_TOKEN, isEscalationRequest, nextFamily, systemPromptFor } from "../src/core/escalation";
 import { parsePrefix } from "../src/core/prefix";
 import { ModelRegistry, RegistryError, validateRegistry } from "../src/core/registry";
@@ -17,7 +17,7 @@ const registry = new ModelRegistry(validateRegistry(structuredClone(rawRegistry)
 
 function settings(overrides: Partial<RouterSettings> = {}): RouterSettings {
   const families = Object.fromEntries(FAMILIES.map((f) => [f, { channel: "latest" }])) as RouterSettings["families"];
-  return { pinnedFamily: "auto", releaseChannel: "stable", provider: "anthropic", families, ...overrides };
+  return { pinnedFamily: "auto", releaseChannel: "stable", provider: "anthropic", families, budgetMode: "normal", ...overrides };
 }
 
 function withFamily(family: Family, pref: RouterSettings["families"][Family], base = settings()): RouterSettings {
@@ -275,5 +275,37 @@ describe("decision log", () => {
     assert.equal("prompt" in e, false);
     assert.equal(e.promptChars, 8);
     assert.equal(e.contextBytes, 2 * KB);
+  });
+
+  describe("parseDecisionLog", () => {
+    const line = (promptChars: number) =>
+      JSON.stringify(buildEntry({ ...outcome, prompt: "x".repeat(promptChars) }, true, new Date()));
+
+    it("returns most-recent-first", () => {
+      const text = [line(1), line(2), line(3)].join("\n") + "\n";
+      const entries = parseDecisionLog(text);
+      assert.deepEqual(entries.map((e) => e.promptChars), [3, 2, 1]);
+    });
+
+    it("skips a corrupt line instead of failing the whole read", () => {
+      const text = [line(1), "{not valid json", line(2)].join("\n");
+      const entries = parseDecisionLog(text);
+      assert.deepEqual(entries.map((e) => e.promptChars), [2, 1]);
+    });
+
+    it("ignores blank lines", () => {
+      const text = `${line(1)}\n\n\n${line(2)}\n`;
+      assert.equal(parseDecisionLog(text).length, 2);
+    });
+
+    it("caps at the limit, keeping the most recent", () => {
+      const text = [line(1), line(2), line(3), line(4)].join("\n");
+      const entries = parseDecisionLog(text, 2);
+      assert.deepEqual(entries.map((e) => e.promptChars), [4, 3]);
+    });
+
+    it("returns an empty array for empty input", () => {
+      assert.deepEqual(parseDecisionLog(""), []);
+    });
   });
 });

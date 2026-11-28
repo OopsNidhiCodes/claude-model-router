@@ -54,9 +54,10 @@ Open the Command Palette and type "Claude Router":
 - **Open Chat** opens the chat panel. The active selection or file is attached by default.
 - **Edit Selection** rewrites the selected code in place. Also in the editor context menu.
 - **Pin Model Family** pins every request to one family. Also by clicking the status bar item.
+- **Set Budget Mode** picks a cost/quality preset. Also by clicking the status bar item.
 - **Set / Clear Anthropic API Key** stores the key in VS Code SecretStorage.
 - **Rescan Workspace Constraints** re-reads the workspace declaration files.
-- **Open / Clear Decision Log** views or empties the local routing log.
+- **Open Decision Log Viewer** shows recent routing decisions in a table — timestamp, prompt, tier, decided vs. served family, escalations. **Open Decision Log** opens the raw JSON Lines file instead, for scripting or export. **Clear Decision Log** empties it (also reachable from the viewer).
 
 ## Development
 
@@ -115,6 +116,27 @@ curl -s https://api.groq.com/openai/v1/models \
 The `groq/*` passthrough entry in `litellm.yaml` also lets you call any Groq
 model by name from the extension's Custom Model ID channel.
 
+## Provider fallback
+
+Each provider's own SDK already retries a rate limit or server error a couple
+of times on its own, honoring `Retry-After`. If that's exhausted and nothing
+has streamed back yet, the request moves to the next provider that has this
+model in the registry (`anthropic` → `bedrock` → `vertex`, skipping whichever
+one just failed), using its own credentials. A fallback provider is given 8
+seconds to answer — enough for a real reply, short enough that an unconfigured
+Bedrock or Vertex (missing AWS or GCP credentials) fails fast instead of
+stalling the UI.
+
+Once any text has reached the chat, fallback stops — retrying could duplicate
+or splice together two replies. If every provider fails, the error shown is
+the first provider's, since that's the one actually worth explaining; an
+unconfigured fallback's credential error is not useful to someone who only
+uses the Claude API.
+
+A custom model ID (`channel: custom`) has no known equivalent on another
+provider, so it is never retried elsewhere. The status bar flashes
+`provider → provider` when a fallback answers.
+
 ## Escalation
 
 A task can look easy and turn out hard. Two escape hatches re-run a turn one
@@ -130,12 +152,43 @@ tier up (Haiku, Sonnet, Opus, Fable):
 Once a chat has escalated, that tier becomes the floor for the rest of the
 conversation. "New chat" resets it. A `/prefix` still overrides the floor.
 
+A third case: the model never says ESCALATE, but keeps answering at the same
+tier without resolving things. This extension has no tool-execution loop to
+cap (there's one request per message, not an agentic step counter), so the
+closest signal available is consecutive replies: if one chat gets
+`claudeRouter.dispatchCap.maxConsecutiveTurns` replies in a row from the same
+family with nothing ever escalating, the floor raises one tier for the next
+message, with a note explaining why. Default 3; 0 disables it. A real
+escalation already resets the count, since it changes which family answered.
+
+## Budget mode
+
+A quick cost/quality preset, set via **Claude Router: Set Budget Mode** or by
+clicking the status bar:
+
+| Mode | Effect |
+|---|---|
+| `normal` | The classifier's measured thresholds (default). |
+| `budget` | Biases toward Haiku and Sonnet — a soft shift, not a cap; Opus or Fable still answer when the signals are strong enough. |
+| `quality` | The mirror of `budget`: biases toward Opus. |
+| `deep` | A hard floor — never routes below Opus. The agentic signal still decides Opus vs Fable, the same way it does normally. |
+
+`budget` and `quality` shift the trained model's per-tier confidence bars;
+these shift amounts are a product default for an explicit, explainable
+preference, not a measured optimum like the `normal` thresholds are. `deep`
+works differently: it's a floor applied the same way an escalation floor is,
+so it stacks with one (the higher of the two wins), raises a pin too, and a
+`/prefix` still bypasses it.
+
 ## Decision log
 
 Off by default. Set `claudeRouter.decisionLog.enabled` to record every routed
 turn as one JSON line in `decisions.jsonl` inside the extension's storage
-folder. **Claude Router: Open Decision Log** opens it; **Clear Decision Log**
-empties it. Nothing is ever sent anywhere.
+folder. **Claude Router: Open Decision Log Viewer** shows it as a table —
+most recent first, with a Refresh and a Clear button — and is the easiest way
+to check it day to day. **Open Decision Log** opens the raw file instead, for
+scripting or export; **Clear Decision Log** empties it. Nothing is ever sent
+anywhere.
 
 Each line holds the prompt (unless `decisionLog.includePrompt` is off), prompt
 and context sizes, classifier scores and reasons, the first decision and its
@@ -154,6 +207,7 @@ All settings live under `claudeRouter.*`. The most useful ones:
 |---|---|
 | `provider` | `anthropic`, `bedrock` or `vertex`. |
 | `pinnedFamily` | `auto` or a family name. |
+| `budgetMode` | `normal`, `budget`, `quality` or `deep`. |
 | `releaseChannel` | `stable` or `experimental`. |
 | `<family>.channel` | `latest`, `snapshot` or `custom` per family. |
 | `<family>.snapshot` / `<family>.customModelId` | The version or raw ID for those channels. |
@@ -161,4 +215,5 @@ All settings live under `claudeRouter.*`. The most useful ones:
 | `registryPath` | Path to a replacement `models-registry.json`. |
 | `maxTokens` | `max_tokens` for every request. |
 | `escalation.maxAuto` | Model-initiated escalations allowed per request. |
+| `dispatchCap.maxConsecutiveTurns` | Same-family replies in a row before the floor auto-raises. |
 | `decisionLog.enabled` / `decisionLog.includePrompt` | Local routing log and whether it keeps prompt text. |

@@ -3,7 +3,7 @@ import * as path from "node:path";
 import * as vscode from "vscode";
 import { ClassifierModel } from "../core/features";
 import { ModelRegistry, validateRegistry } from "../core/registry";
-import { FAMILIES, Family, FamilyPreference, ProviderName, ReleaseChannel, RouterSettings } from "../core/types";
+import { BudgetMode, FAMILIES, Family, FamilyPreference, ProviderName, ReleaseChannel, RouterSettings } from "../core/types";
 import { ProviderOptions } from "../providers/provider";
 
 export const SECTION = "claudeRouter";
@@ -24,6 +24,7 @@ export function readSettings(): RouterSettings {
     releaseChannel: cfg.get<ReleaseChannel>("releaseChannel", "stable"),
     provider: cfg.get<ProviderName>("provider", "anthropic"),
     families,
+    budgetMode: cfg.get<BudgetMode>("budgetMode", "normal"),
   };
 }
 
@@ -62,6 +63,11 @@ export function loadRegistry(extensionPath: string): ModelRegistry {
 /** Automatic (model-initiated) escalations allowed per request. */
 export function maxAutoEscalations(): number {
   return vscode.workspace.getConfiguration(SECTION).get<number>("escalation.maxAuto", 1);
+}
+
+/** Consecutive same-family replies in one chat before the floor auto-raises. 0 disables it. */
+export function dispatchCapMaxConsecutiveTurns(): number {
+  return vscode.workspace.getConfiguration(SECTION).get<number>("dispatchCap.maxConsecutiveTurns", 3);
 }
 
 /** The bundled trained classifier, or undefined if it is missing or unreadable (the keyword rules then decide). */

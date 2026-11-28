@@ -26,6 +26,15 @@ export const FAMILY_TO_TIER: Record<Family, Tier> = {
   fable: "expert",
 };
 
+/**
+ * Quick cost/quality preset (roadmap: "budget modes"). "budget" and "quality"
+ * bias the classifier's per-tier thresholds without ever forcing a tier;
+ * "deep" is a hard floor, the same mechanism an escalation floor uses, so it
+ * still lets the agentic signal choose Opus vs Fable. See `src/core/budget.ts`.
+ */
+export type BudgetMode = "normal" | "budget" | "quality" | "deep";
+export const BUDGET_MODES: readonly BudgetMode[] = ["normal", "budget", "quality", "deep"];
+
 export type ProviderName = "anthropic" | "bedrock" | "vertex";
 export type ReleaseChannel = "stable" | "experimental";
 export type ModelStatus = "current" | "previous" | "deprecated";
@@ -86,6 +95,7 @@ export interface RouterSettings {
   releaseChannel: ReleaseChannel;
   provider: ProviderName;
   families: Record<Family, FamilyPreference>;
+  budgetMode: BudgetMode;
 }
 
 export interface ClassifierInput {
@@ -104,7 +114,7 @@ export interface Classification {
   reasons: string[];
 }
 
-export type DecisionSource = "prefix" | "pin" | "classifier" | "escalation";
+export type DecisionSource = "prefix" | "pin" | "classifier" | "escalation" | "budget";
 
 export interface RouteDecision {
   family: Family;

@@ -45,6 +45,24 @@ export interface TurnOutcome {
   error?: string;
 }
 
+/**
+ * Parses logged JSON-lines text into entries, most recent first, for the
+ * decision log viewer. A line that fails to parse (e.g. a write interrupted
+ * mid-append) is skipped rather than failing the whole read.
+ */
+export function parseDecisionLog(text: string, limit = 300): DecisionLogEntry[] {
+  const entries: DecisionLogEntry[] = [];
+  for (const line of text.split("\n")) {
+    if (!line.trim()) continue;
+    try {
+      entries.push(JSON.parse(line) as DecisionLogEntry);
+    } catch {
+      // Skip a corrupt line rather than fail the whole view.
+    }
+  }
+  return entries.slice(-limit).reverse();
+}
+
 export function buildEntry(o: TurnOutcome, includePrompt: boolean, now = new Date()): DecisionLogEntry {
   return {
     ts: now.toISOString(),

@@ -1,7 +1,7 @@
-import { appendFile, mkdir, writeFile } from "node:fs/promises";
+import { appendFile, mkdir, readFile, writeFile } from "node:fs/promises";
 import * as path from "node:path";
 import * as vscode from "vscode";
-import { buildEntry, TurnOutcome } from "../core/decisionLog";
+import { buildEntry, DecisionLogEntry, parseDecisionLog, TurnOutcome } from "../core/decisionLog";
 import { SECTION } from "./config";
 
 /**
@@ -20,6 +20,10 @@ export class DecisionLog {
     return { enabled: cfg.get<boolean>("enabled", false), includePrompt: cfg.get<boolean>("includePrompt", true) };
   }
 
+  isEnabled(): boolean {
+    return this.config.enabled;
+  }
+
   /** Appends one turn. Logging failures are reported once in the status area, never thrown. */
   async record(outcome: TurnOutcome): Promise<void> {
     const { enabled, includePrompt } = this.config;
@@ -29,6 +33,16 @@ export class DecisionLog {
       await appendFile(this.file, JSON.stringify(buildEntry(outcome, includePrompt)) + "\n", "utf8");
     } catch (err) {
       void vscode.window.setStatusBarMessage(`Claude Router: could not write decision log (${String(err)})`, 5000);
+    }
+  }
+
+  /** The most recent entries, newest first, for the webview viewer. Empty if nothing has been logged yet. */
+  async readEntries(limit = 300): Promise<DecisionLogEntry[]> {
+    try {
+      return parseDecisionLog(await readFile(this.file, "utf8"), limit);
+    } catch (err) {
+      if ((err as NodeJS.ErrnoException).code === "ENOENT") return [];
+      throw err;
     }
   }
 

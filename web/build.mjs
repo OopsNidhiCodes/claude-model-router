@@ -12,7 +12,7 @@ const model = readFileSync(new URL("../resources/classifier-model.json", import.
 
 // Dependency order: each module may only require ones defined before it, because
 // `define` runs its body immediately.
-const BUNDLED = ["types", "features", "signals", "classifier"];
+const BUNDLED = ["types", "budget", "features", "signals", "classifier"];
 const sources = Object.fromEntries(BUNDLED.map((name) => [name, strip(readFileSync(out(`${name}.js`), "utf8"))]));
 
 BUNDLED.forEach((name, i) => {

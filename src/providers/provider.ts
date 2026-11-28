@@ -31,6 +31,83 @@ export interface NetworkProvider {
   stream(req: ChatRequest, onText: (delta: string) => void): Promise<Message>;
 }
 
+/**
+ * True for errors worth trying a different provider over: rate limits and
+ * server-side overload/errors. Each SDK client already retries these a couple
+ * of times internally (with its own backoff, honoring Retry-After) before
+ * raising, so reaching here means that was exhausted. Anything else (auth,
+ * bad request, a genuine 404) means the request itself is wrong and another
+ * provider would fail the same way, so it is surfaced immediately instead.
+ */
+export function isRetryableError(err: unknown): boolean {
+  return err instanceof Anthropic.RateLimitError || err instanceof Anthropic.InternalServerError;
+}
+
+export interface FallbackCandidate {
+  provider: ProviderName;
+  client: NetworkProvider;
+  /** The provider-specific model string for this candidate. */
+  model: string;
+}
+
+export interface FallbackResult {
+  message: Message;
+  /** Set only when a provider other than the first candidate answered. */
+  servedByProvider?: ProviderName;
+  servedByModel?: string;
+}
+
+/** How long a fallback provider gets to answer before it's skipped as unreachable or unconfigured. */
+const FALLBACK_TIMEOUT_MS = 8000;
+
+/**
+ * Streams the first candidate; on a retryable error with nothing streamed yet,
+ * walks the rest of the list trying the same request on each in turn. A
+ * fallback candidate that is slow to fail (e.g. Bedrock resolving AWS
+ * credentials with nothing configured) is bounded so it cannot stall the UI.
+ *
+ * Once any text has reached the caller, fallback stops: retrying would either
+ * duplicate what the user already saw or silently splice two replies together.
+ * If every candidate fails, the first candidate's error is what's thrown,
+ * since it's the one actually worth explaining — a Bedrock credential error
+ * from an unconfigured fallback is not useful to an Anthropic-only user.
+ */
+export async function streamWithFallback(
+  candidates: readonly FallbackCandidate[],
+  req: Omit<ChatRequest, "model">,
+  onText: (delta: string) => void,
+): Promise<FallbackResult> {
+  let streamed = false;
+  const wrappedOnText = (delta: string) => {
+    streamed = true;
+    onText(delta);
+  };
+
+  const [primary, ...rest] = candidates;
+  try {
+    const message = await primary.client.stream({ ...req, model: primary.model }, wrappedOnText);
+    return { message };
+  } catch (primaryErr) {
+    if (streamed || rest.length === 0 || !isRetryableError(primaryErr)) throw primaryErr;
+
+    for (const candidate of rest) {
+      const signal = combineSignals(req.signal, AbortSignal.timeout(FALLBACK_TIMEOUT_MS));
+      try {
+        const message = await candidate.client.stream({ ...req, model: candidate.model, signal }, wrappedOnText);
+        return { message, servedByProvider: candidate.provider, servedByModel: candidate.model };
+      } catch (fallbackErr) {
+        if (streamed) throw fallbackErr;
+        // Try the next candidate; the original error is still what gets surfaced if they all fail.
+      }
+    }
+    throw primaryErr;
+  }
+}
+
+function combineSignals(a: AbortSignal | undefined, b: AbortSignal): AbortSignal {
+  return a ? AbortSignal.any([a, b]) : b;
+}
+
 // The Mantle and Vertex clients expose the same beta.messages surface as the first-party client.
 type MessagesClient = { beta: { messages: Pick<Anthropic["beta"]["messages"], "stream"> } };
 

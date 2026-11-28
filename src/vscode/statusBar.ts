@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import { RouteDecision, RouterSettings } from "../core/types";
+import { ProviderName, RouteDecision, RouterSettings } from "../core/types";
 
 const FLASH_MS = 4000;
 
@@ -16,9 +16,10 @@ export class RouterStatusBar implements vscode.Disposable {
     this.item.show();
   }
 
-  /** Resting text when idle: the pin, if any. */
+  /** Resting text when idle: the pin, if any, and the budget mode when it isn't "normal". */
   showSettings(settings: RouterSettings) {
-    this.resting = settings.pinnedFamily === "auto" ? "$(hubot) Claude Router: auto" : `$(pin) Claude Router: ${settings.pinnedFamily}`;
+    const base = settings.pinnedFamily === "auto" ? "$(hubot) Claude Router: auto" : `$(pin) Claude Router: ${settings.pinnedFamily}`;
+    this.resting = settings.budgetMode === "normal" ? base : `${base} · ${settings.budgetMode}`;
     if (!this.timer) this.item.text = this.resting;
   }
 
@@ -42,6 +43,17 @@ export class RouterStatusBar implements vscode.Disposable {
     this.item.tooltip = `${fromLabel} declined the request; ${toLabel} answered it (server-side fallback).`;
     this.setTimer(() => {
       this.item.text = `$(arrow-swap) ${toLabel}`;
+      this.item.backgroundColor = undefined;
+    });
+  }
+
+  /** Shown when the configured provider was rate limited or overloaded and another provider answered instead. */
+  flashProviderFallback(label: string, fromProvider: ProviderName, toProvider: ProviderName) {
+    this.item.text = `$(arrow-swap) ${label} via ${toProvider}`;
+    this.item.backgroundColor = new vscode.ThemeColor("statusBarItem.warningBackground");
+    this.item.tooltip = `${fromProvider} was rate limited or unavailable; ${toProvider} answered instead.`;
+    this.setTimer(() => {
+      this.item.text = `$(arrow-swap) ${label}`;
       this.item.backgroundColor = undefined;
     });
   }
